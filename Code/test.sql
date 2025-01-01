@@ -1,1 +1,1 @@
-SELECT "Hello World!" AS greeting;
+CREATE TABLE snowflake_test
