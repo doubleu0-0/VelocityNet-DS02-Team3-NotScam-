@@ -1,5 +1,5 @@
 -- This schema will be used to house the backedup tables
-CREATE SCHEMA TEAM3_BACKUP;
+CREATE OR REPLACE SCHEMA TEAM3_BACKUP;
 
 -- Stored procedure to clone and backup all tables
 CREATE OR REPLACE PROCEDURE clone_and_backup_all_tables(
