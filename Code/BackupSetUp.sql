@@ -49,14 +49,3 @@ SELECT
     TIMESTAMPDIFF('hour', MAX(backup_time), CURRENT_TIMESTAMP) AS hours_since_last_backup
 FROM backup_tracking
 WHERE NOTES = 'Backup completed successfully';
-
-
-
--- Function to send sns notif
-CREATE OR REPLACE NOTIFICATION INTEGRATION BACKUP_SNS_NOTIF_INT
-  ENABLED = TRUE
-  DIRECTION = OUTBOUND
-  TYPE = QUEUE
-  NOTIFICATION_PROVIDER = AWS_SNS
-  AWS_SNS_TOPIC_ARN = 'arn:aws:sns:us-east-1:571600844113:Team3BackupStatus'
-  AWS_SNS_ROLE_ARN = 'arn:aws:iam::571600844113:role/team3-backup-role';
