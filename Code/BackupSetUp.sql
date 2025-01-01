@@ -7,12 +7,15 @@ CREATE SCHEMA IF NOT EXISTS TEAM3_BACKUP;
 USE SCHEMA TEAM3_BACKUP;
 
 -- Create a storage integration to connect external storage (S3 bucket)
+-- DO NOT RERUN THIS; will need to chagne the external ID for trust policy in IAM role in AWS
+/*
 CREATE OR REPLACE STORAGE INTEGRATION S3SNOWFLAKE_TEAM3_BACKUP
   TYPE = EXTERNAL_STAGE
   STORAGE_PROVIDER = 'S3'
   ENABLED = TRUE
   STORAGE_AWS_ROLE_ARN = 'arn:aws:iam::571600844113:role/team3-backup-role'
   STORAGE_ALLOWED_LOCATIONS = ('s3://team3-bucket-backup/team3database-backup/');
+*/
 
 
 -- Function to send sns notif
