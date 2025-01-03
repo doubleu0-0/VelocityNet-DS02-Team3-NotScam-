@@ -1,4 +1,4 @@
--- Joshua Table Cleaning
+-- Xue Cong Table Cleaning
 -- Cleaning Product_Subcategory_Clean
 CREATE OR REPLACE TABLE PRODUCT_SUBCATEGORY_CLEAN AS 
 SELECT
@@ -96,7 +96,7 @@ IS NOT NULL AND PRODUCTMODELID IS NOT NULL;
 
 
 
-
+-- Joshua Table Cleaning
 --Create cleaned table for PERSON_ADDRESS
 CREATE OR REPLACE TABLE PERSON_ADDRESS_CLEANED AS
 SELECT ADDRESSID, ADDRESSLINE1, ADDRESSLINE2,CITY,STATEPROVINCEID,
@@ -165,22 +165,6 @@ OR SICKLEAVEHOURS IS NULL OR CURRENTFLAG IS NULL OR MODIFIEDDATE IS NULL
 
 --Check the table again
 SELECT * FROM HUMANRESOURCES_EMPLOYEE_CLEANED
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 --Create cleaned table for PERSON_STATEPROVINCE
 CREATE OR REPLACE TABLE PERSON_STATEPROVINCE_CLEANED AS
@@ -367,7 +351,7 @@ WHERE MODIFIED_DATE IS NOT NULL;
 
 SELECT * FROM PURCHASING_VENDOR_CLEANED
 
--- Jaden Table cleaning    
+-- Jaden Table Cleaning    
 -- cleaning for Sales_SalesTerritory
 -- select needed columns and standardise data columns
 CREATE OR REPLACE TABLE Sales_SalesTerritory_clean AS
