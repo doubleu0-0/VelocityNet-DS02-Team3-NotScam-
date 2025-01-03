@@ -82,3 +82,51 @@ CREATE OR REPLACE TABLE Sales_Store_Clean (
     Internet STRING,
     NumberEmployees INT
 );
+
+
+
+CREATE OR REPLACE TABLE SALES_SPECIALOFFERPRODUCT (
+    SPECIALOFFERID NUMBER(38, 0) NOT NULL,
+    PRODUCTID NUMBER(38, 0) NOT NULL,
+    ROWGUID STRING NOT NULL DEFAULT UUID_STRING(),
+    ModifiedDate STRING
+);
+
+CREATE OR REPLACE TABLE SALES_SPECIALOFFER (
+    SpecialOfferID NUMBER(38, 0) NOT NULL AUTOINCREMENT,
+    Description STRING NOT NULL,
+    DiscountPct NUMBER(5, 2) NOT NULL DEFAULT 0.00,
+    Type STRING NOT NULL,
+    Category STRING NOT NULL,
+    StartDate TIMESTAMP_NTZ NOT NULL,
+    EndDate TIMESTAMP_NTZ NOT NULL,
+    MinQty NUMBER(38, 0) NOT NULL DEFAULT 0,
+    MaxQty NUMBER(38, 0) NULL,
+    rowguid STRING NOT NULL DEFAULT UUID_STRING(),
+    ModifiedDate STRING
+);
+CREATE OR REPLACE TABLE HUMANRESOURCES_DEPARTMENT (
+    DepartmentID NUMBER(38, 0) AUTOINCREMENT PRIMARY KEY,   -- Auto-increment for DepartmentID
+    Name STRING NOT NULL,                                   -- String for Name
+    GroupName STRING NOT NULL,                              -- String for GroupName
+    ModifiedDate STRING
+);
+
+CREATE OR REPLACE TABLE HUMANRESOURCES_EMPLOYEE (
+    BusinessEntityID NUMBER(38, 0) NOT NULL,
+    NationalIDNumber STRING(15) NOT NULL,
+    LoginID STRING(256) NOT NULL,
+    OrganizationNode STRING,
+    OrganizationLevel STRING,
+    JobTitle STRING(50) NOT NULL,
+    BirthDate DATE NOT NULL,
+    MaritalStatus STRING(1) NOT NULL,
+    Gender STRING(1) NOT NULL,
+    HireDate DATE NOT NULL,
+    SalariedFlag NUMBER(1,0) NOT NULL DEFAULT 1,
+    VacationHours NUMBER(38, 0) NOT NULL DEFAULT 0,
+    SickLeaveHours NUMBER(38, 0) NOT NULL DEFAULT 0,
+    CurrentFlag NUMBER(1,0) NOT NULL DEFAULT 1,
+    rowguid STRING NOT NULL DEFAULT UUID_STRING(),
+    ModifiedDate STRING
+);
