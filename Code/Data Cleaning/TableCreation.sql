@@ -130,3 +130,74 @@ CREATE OR REPLACE TABLE HUMANRESOURCES_EMPLOYEE (
     rowguid STRING NOT NULL DEFAULT UUID_STRING(),
     ModifiedDate STRING
 );
+
+CREATE OR REPLACE TABLE Purchasing_PurchaseOrderDetail (
+    PurchaseOrderID INT NOT NULL, -- Foreign key reference (no enforcement in Snowflake)
+    PurchaseOrderDetailID INT AUTOINCREMENT NOT NULL, -- Replaces SQL Server's IDENTITY
+    DueDate DATETIME NOT NULL,
+    OrderQty SMALLINT NOT NULL,
+    ProductID INT NOT NULL,
+    UnitPrice DECIMAL(19, 4) NOT NULL, -- Replaces MONEY
+    LineTotal DECIMAL(19, 4) NOT NULL, -- Computed column
+    ReceivedQty DECIMAL(8, 2) NOT NULL,
+    RejectedQty DECIMAL(8, 2) NOT NULL,
+    StockedQty DECIMAL(8, 2) NOT NULL, -- Computed column
+    ModifiedDate STRING
+);
+
+CREATE OR REPLACE TABLE Purchasing_ProductVendor (
+    ProductID INT NOT NULL,
+    BusinessEntityID INT NOT NULL,
+    AverageLeadTime INT NOT NULL,
+    StandardPrice DECIMAL(19, 4) NOT NULL, -- Replaces MONEY
+    LastReceiptCost DECIMAL(19, 4), -- Replaces MONEY
+    LastReceiptDate DATETIME, -- NULL is implicit
+    MinOrderQty INT NOT NULL,
+    MaxOrderQty INT NOT NULL,
+    OnOrderQty INT, -- NULL is implicit
+    UnitMeasureCode CHAR(3) NOT NULL, -- Replaces NCHAR(3)
+    ModifiedDate STRING
+);
+
+
+CREATE OR REPLACE TABLE Purchasing_PurchaseOrderHeader (
+    PurchaseOrderID INT AUTOINCREMENT NOT NULL, -- Replaces IDENTITY (1, 1)
+    RevisionNumber TINYINT NOT NULL DEFAULT 0,
+    Status TINYINT NOT NULL DEFAULT 1,
+    EmployeeID INT NOT NULL,
+    VendorID INT NOT NULL,
+    ShipMethodID INT NOT NULL,
+    OrderDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, -- Replaces DEFAULT (GETDATE())
+    ShipDate DATETIME, -- NULL is implicit
+    SubTotal DECIMAL(19, 4) NOT NULL DEFAULT 0.00, -- Replaces MONEY
+    TaxAmt DECIMAL(19, 4) NOT NULL DEFAULT 0.00, -- Replaces MONEY
+    Freight DECIMAL(19, 4) NOT NULL DEFAULT 0.00, -- Replaces MONEY
+    TotalDue DECIMAL(19, 4) NOT NULL, -- Computed column
+    ModifiedDate STRING
+);
+
+CREATE OR REPLACE TABLE Purchasing_Vendor (
+    BusinessEntityID INT NOT NULL,
+    AccountNumber STRING NOT NULL, -- Replace with STRING for variable-length text
+    Name STRING NOT NULL, -- Replace with STRING for variable-length text
+    CreditRating TINYINT NOT NULL,
+    PreferredVendorStatus BOOLEAN NOT NULL DEFAULT TRUE, -- Replaces Flag (assuming TRUE/FALSE values)
+    ActiveFlag BOOLEAN NOT NULL DEFAULT TRUE, -- Replaces Flag (assuming TRUE/FALSE values)
+    PurchasingWebServiceURL STRING, -- Replaces NVARCHAR (1024)
+    ModifiedDate STRING
+);
+
+CREATE OR REPLACE TABLE Purchasing_ShipMethod (
+    ShipMethodID INT AUTOINCREMENT NOT NULL, -- Replaces IDENTITY (1, 1)
+    Name STRING NOT NULL, -- Replace with STRING for variable-length text
+    ShipBase DECIMAL(19, 4) NOT NULL DEFAULT 0.00, -- Replaces MONEY
+    ShipRate DECIMAL(19, 4) NOT NULL DEFAULT 0.00, -- Replaces MONEY
+    rowguid STRING NOT NULL DEFAULT UUID_STRING(), -- Replaces uniqueidentifier and NEWID() with UUID_STRING()
+    ModifiedDate STRING
+);
+
+
+
+
+
+
