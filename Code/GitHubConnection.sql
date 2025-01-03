@@ -1,10 +1,9 @@
--- Xue Cong key: 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
 use role training_role;
 
 create or replace secret github_secret
     type = password
     username = 'doubleu0-0' 
-    password = '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'; 
+    password = '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'; 
 
 create or replace api integration git_api_integration_team3
     api_provider = git_https_api
