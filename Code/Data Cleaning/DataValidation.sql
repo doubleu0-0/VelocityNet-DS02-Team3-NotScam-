@@ -1,3 +1,4 @@
+-- Joshua data validation
 --Check for null values
 SELECT *
 FROM PERSON_ADDRESS_CLEANED
@@ -142,5 +143,85 @@ FROM PURCHASING_PURCHASEORDERHEADER
 UNION
 SELECT 'PURCHASING_PURCHASEORDERHEADER_CLEANED', COUNT(*)
 FROM PURCHASING_PURCHASEORDERHEADER_CLEANED;
+
+-- Jaden Data validation
+-- Sales_SalesTerritory_clean
+Select * from Sales_SalesTerritory_clean;
+-- check for duplicates
+SELECT TERRITORYID, COUNT(*) AS duplicate_count
+FROM Sales_SalesTerritory_clean
+GROUP BY TERRITORYID
+HAVING COUNT(*) > 1;
+-- check for null values in ID columns
+SELECT *
+FROM Sales_SalesTerritory_clean
+WHERE TERRITORYID IS NULL;
+-- check the number of rows afterwards
+SELECT COUNT(TERRITORYID) FROM Sales_SalesTerritory_clean;
+
+-- Sales_Customer_clean
+Select * from Sales_Customer_clean;
+-- check for duplicates
+SELECT CUSTOMERID, COUNT(*) AS duplicate_count
+FROM Sales_Customer_clean
+GROUP BY CUSTOMERID
+HAVING COUNT(*) > 1;
+-- check for null values in ID columns
+SELECT *
+FROM Sales_Customer_clean
+WHERE CUSTOMERID IS NULL;
+-- check the number of rows afterwards
+SELECT COUNT(CUSTOMERID) FROM Sales_Customer_clean;
+
+-- Sales_SalesOrderHeader_clean
+Select * from Sales_SalesOrderHeader_clean;
+-- check for duplicates
+SELECT SALESORDERID, COUNT(*) AS duplicate_count
+FROM Sales_SalesOrderHeader_clean
+GROUP BY SALESORDERID
+HAVING COUNT(*) > 1;
+-- check for null values in ID columns
+SELECT *
+FROM Sales_SalesOrderHeader_clean
+WHERE SALESORDERID IS NULL;
+-- check if all the customer ID are in the customer table
+SELECT CUSTOMERID
+FROM Sales_SalesOrderHeader_clean soh
+WHERE soh.CUSTOMERID NOT IN (SELECT c.CUSTOMERID FROM Sales_Customer_clean C);
+-- check the number of rows afterwards
+SELECT COUNT(SALESORDERID) FROM Sales_SalesOrderHeader_clean;
+
+-- Sales_SalesOrderDetail_clean
+Select * from Sales_SalesOrderDetail_clean;
+-- check for duplicates
+SELECT SALESORDERDETAILID, COUNT(*) AS duplicate_count
+FROM Sales_SalesOrderDetail_clean
+GROUP BY SALESORDERDETAILID
+HAVING COUNT(*) > 1;
+-- check for null values in ID columns
+SELECT *
+FROM Sales_SalesOrderDetail_clean
+WHERE SALESORDERDETAILID IS NULL;
+-- check if all the sales order ID are in the sales order header table
+SELECT SALESORDERID
+FROM Sales_SalesOrderDetail_clean sod
+WHERE sod.SALESORDERID NOT IN (SELECT soh.SALESORDERID FROM Sales_SalesOrderHeader_clean soh);
+-- check the number of rows afterwards
+SELECT COUNT(SALESORDERDETAILID) FROM Sales_SalesOrderDetail_clean;
+
+-- HumanResources_Department_clean
+Select * from HumanResources_Department_clean;
+-- check for duplicates
+SELECT DEPARTMENTID, COUNT(*) AS duplicate_count
+FROM HumanResources_Department_clean
+GROUP BY DEPARTMENTID
+HAVING COUNT(*) > 1;
+-- check for null values in ID columns
+SELECT *
+FROM HumanResources_Department_clean
+WHERE DEPARTMENTID IS NULL;
+-- check the number of rows afterwards
+SELECT COUNT(DEPARTMENTID) FROM HumanResources_Department_clean;
+
 
 

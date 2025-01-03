@@ -1,3 +1,4 @@
+-- Xue Cong Table Cleaning
 -- Cleaning Product_Subcategory_Clean
 CREATE OR REPLACE TABLE PRODUCT_SUBCATEGORY_CLEAN AS 
 SELECT
@@ -95,7 +96,7 @@ IS NOT NULL AND PRODUCTMODELID IS NOT NULL;
 
 
 
-
+-- Joshua Table Cleaning
 --Create cleaned table for PERSON_ADDRESS
 CREATE OR REPLACE TABLE PERSON_ADDRESS_CLEANED AS
 SELECT ADDRESSID, ADDRESSLINE1, ADDRESSLINE2,CITY,STATEPROVINCEID,
@@ -164,22 +165,6 @@ OR SICKLEAVEHOURS IS NULL OR CURRENTFLAG IS NULL OR MODIFIEDDATE IS NULL
 
 --Check the table again
 SELECT * FROM HUMANRESOURCES_EMPLOYEE_CLEANED
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 --Create cleaned table for PERSON_STATEPROVINCE
 CREATE OR REPLACE TABLE PERSON_STATEPROVINCE_CLEANED AS
@@ -365,3 +350,93 @@ FROM PURCHASING_VENDOR
 WHERE MODIFIED_DATE IS NOT NULL;
 
 SELECT * FROM PURCHASING_VENDOR_CLEANED
+
+-- Jaden Table Cleaning    
+-- cleaning for Sales_SalesTerritory
+-- select needed columns and standardise data columns
+CREATE OR REPLACE TABLE Sales_SalesTerritory_clean AS
+SELECT 
+TERRITORYID,
+NAME, 
+COUNTRYREGIONCODE,
+"Group",
+SALESYTD,
+SALESLASTYEAR,
+MODIFIEDDATE::DATE AS MODIFIEDDATE
+FROM Sales_SalesTerritory
+
+-- cleaning for Sales_Customer
+-- select needed columns
+CREATE OR REPLACE TABLE Sales_Customer_clean AS
+SELECT 
+CUSTOMERID,
+PERSONID,
+STOREID,
+TERRITORYID,
+ACCOUNTNUMBER,
+MODIFIEDDATE::DATE AS MODIFIEDDATE
+FROM Sales_Customer
+
+-- there is null in PersonID, null when it is a store
+-- there is null in StoreID, null when it is a customer
+-- if both are not null, they are a employee
+-- thus no need to impute these nulls
+
+
+-- cleaning for Sales_SalesOrderHeader
+-- select needed columns
+CREATE OR REPLACE TABLE Sales_SalesOrderHeader_clean AS
+SELECT 
+SALESORDERID,
+ORDERDATE::DATE AS ORDERDATE,
+DUEDATE::DATE AS DUEDATE,
+SHIPDATE::DATE AS SHIPDATE,
+ONLINEORDERFLAG,
+SALESORDERNUMBER,
+PURCHASEORDERNUMBER,
+ACCOUNTNUMBER,
+CUSTOMERID,
+SALESPERSONID,
+TERRITORYID,
+BILLTOADDRESSID,
+SHIPMETHODID,
+SUBTOTAL,
+TAXAMT,
+FREIGHT,
+TOTALDUE,
+MODIFIEDDATE::DATE AS MODIFIEDDATE
+FROM Sales_SalesOrderHeader
+
+-- PURCHASEORDERNUMBER and SALESPERSONID is null if ONLINEORDERFLAG is 1 where they ordered online
+-- thus no need to impute these nulls
+
+
+-- cleaning for Sales_SalesOrderDetail
+-- select needed columns
+CREATE OR REPLACE TABLE Sales_SalesOrderDetail_clean AS
+SELECT SALESORDERID,
+SALESORDERDETAILID,
+CARRIERTRACKINGNUMBER,
+ORDERQTY,
+PRODUCTID,
+SPECIALOFFERID,
+UNITPRICE,
+UNITPRICEDISCOUNT,
+LINETOTAL,
+MODIFIEDDATE::DATE AS MODIFIEDDATE
+FROM Sales_SalesOrderDetail
+
+-- CARRIERTRACKINGNUMBER is null when the ONLINEORDERFLAG is 1 from Sales_SalesOrderHeader table
+-- thus no need to impute these nulls
+
+
+-- cleaning for HumanResources_Department
+-- select needed columns
+CREATE OR REPLACE TABLE HumanResources_Department_clean AS
+SELECT 
+DEPARTMENTID,
+NAME,
+GROUPNAME,
+MODIFIEDDATE::DATE AS MODIFIEDDATE
+FROM HumanResources_Department
+

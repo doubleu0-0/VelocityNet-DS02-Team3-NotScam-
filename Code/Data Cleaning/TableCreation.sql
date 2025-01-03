@@ -196,7 +196,145 @@ CREATE OR REPLACE TABLE Purchasing_ShipMethod (
     ModifiedDate STRING
 );
 
+-- sales tables
+CREATE OR ALTER TABLE TEAM3_SCHEMA.Sales_SalesOrderHeader (
+    SalesOrderID INT,
+    RevisionNumber INT,
+    OrderDate TIMESTAMP,
+    DueDate TIMESTAMP,
+    ShipDate TIMESTAMP,
+    Status INT,
+    OnlineOrderFlag INT,
+    SalesOrderNumber STRING,
+    PurchaseOrderNumber STRING,
+    AccountNumber STRING,
+    CustomerID INT,
+    SalesPersonID INT,
+    TerritoryID INT,
+    BillToAddressID INT,
+    ShipToAddressID INT,
+    ShipMethodID INT,
+    CreditCardID INT,
+    CreditCardApprovalCode STRING,
+    CurrencyRateID INT NULL,
+    SubTotal DECIMAL,
+    TaxAmt DECIMAL,
+    Freight DECIMAL,
+    TotalDue DECIMAL,
+    Comment STRING NULL,
+    ROWGUID STRING,
+    MODIFIEDDATE TIMESTAMP
+);
 
+CREATE OR ALTER TABLE TEAM3_SCHEMA.Sales_SalesOrderDetail (
+    SalesOrderID INT,
+    SalesOrderDetailID INT,
+    CarrierTrackingNumber STRING,
+    OrderQty INT,
+    ProductID INT,
+    SpecialOfferID INT,
+    UnitPrice DECIMAL,
+    UnitPriceDiscount DECIMAL,
+    LineTotal DECIMAL,
+    ROWGUID STRING,
+    MODIFIEDDATE TIMESTAMP
+);
+
+CREATE OR ALTER TABLE TEAM3_SCHEMA.Sales_Customer (
+    CustomerID INT,
+    PersonID INT NULL,
+    StoreID INT,
+    TerritoryID INT,
+    AccountNumber STRING,
+    ROWGUID STRING,
+    MODIFIEDDATE TIMESTAMP
+);
+
+CREATE OR ALTER TABLE TEAM3_SCHEMA.Sales_SalesTerritory (
+    TerritoryID INT,
+    Name STRING,
+    CountryRegionCode STRING,
+    "Group" STRING,
+    SalesYTD DECIMAL,
+    SalesLastYear DECIMAL,
+    CostYTD DECIMAL,
+    CostLastYear DECIMAL,
+    ROWGUID STRING,
+    MODIFIEDDATE TIMESTAMP
+);
+
+-- Person table
+CREATE OR ALTER TABLE TEAM3_SCHEMA.Person_StateProvince (
+    StateProvinceID INT,
+    StateProvinceCode STRING,
+    CountryRegionCode STRING,
+    IsOnlyStateProvinceFlag INT,
+    Name STRING,
+    TerritoryID INT,
+    ROWGUID STRING,
+    MODIFIEDDATE TIMESTAMP
+);
+
+
+CREATE OR ALTER TABLE TEAM3_SCHEMA.Person_Address (
+    AddressID INT,
+    AddressLine1 STRING,
+    AddressLine2 STRING NULL,
+    City STRING,
+    StateProvinceID INT,
+    PostalCode STRING,
+    SpatialLocation STRING,
+    ROWGUID STRING,
+    MODIFIEDDATE TIMESTAMP
+);
+
+-- HUMANRESOURCES
+CREATE OR REPLACE TABLE HUMANRESOURCES_DEPARTMENT (
+    DepartmentID NUMBER(38, 0) AUTOINCREMENT PRIMARY KEY,   
+    Name STRING NOT NULL,                                   
+    GroupName STRING NOT NULL,                              
+    ModifiedDate TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP  
+);
+
+CREATE OR REPLACE TABLE HUMANRESOURCES_EMPLOYEE (
+    BusinessEntityID NUMBER(38, 0) NOT NULL,
+    NationalIDNumber STRING(15) NOT NULL,
+    LoginID STRING(256) NOT NULL,
+    OrganizationNode STRING,
+    OrganizationLevel STRING,
+    JobTitle STRING(50) NOT NULL,
+    BirthDate DATE NOT NULL,
+    MaritalStatus STRING(1) NOT NULL,
+    Gender STRING(1) NOT NULL,
+    HireDate DATE NOT NULL,
+    SalariedFlag NUMBER(1,0) NOT NULL DEFAULT 1,
+    VacationHours NUMBER(38, 0) NOT NULL DEFAULT 0,
+    SickLeaveHours NUMBER(38, 0) NOT NULL DEFAULT 0,
+    CurrentFlag NUMBER(1,0) NOT NULL DEFAULT 1,
+    rowguid STRING NOT NULL DEFAULT UUID_STRING(),
+    ModifiedDate TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP()
+);
+-- SALES
+CREATE OR REPLACE TABLE SALES_SPECIALOFFERPRODUCT (
+    SpecialOfferID NUMBER(38, 0) NOT NULL,
+    ProductID NUMBER(38, 0) NOT NULL,
+    rowguid STRING NOT NULL DEFAULT UUID_STRING(),
+    ModifiedDate TIMESTAMP_NTZ NOT NULL DEFAULT CURRENT_TIMESTAMP()
+);
+
+CREATE OR REPLACE TABLE SALES_SPECIALOFFER (
+    SpecialOfferID NUMBER(38, 0) NOT NULL AUTOINCREMENT,
+    Description STRING NOT NULL,
+    DiscountPct NUMBER(5, 2) NOT NULL DEFAULT 0.00,
+    Type STRING NOT NULL,
+    Category STRING NOT NULL,
+    StartDate TIMESTAMP_NTZ NOT NULL,
+    EndDate TIMESTAMP_NTZ NOT NULL,
+    MinQty NUMBER(38, 0) NOT NULL DEFAULT 0,
+    MaxQty NUMBER(38, 0) NULL,
+    rowguid STRING NOT NULL DEFAULT UUID_STRING(),
+    ModifiedDate TIMESTAMP_NTZ NOT NULL DEFAULT CURRENT_TIMESTAMP()
+);
 
 
 
