@@ -33,8 +33,12 @@ jobs:
     # Use the CLI
     - name: Test version
       run: snow --version
+
     - name: Test Connection
       env:
+        SNOWFLAKE_CONNECTIONS_DUMMY_ACCOUNT: ${{ secrets.TGT_ACCOUNT }}
+        SNOWFLAKE_CONNECTIONS_DUMMY_USER: ${{ secrets.TGT_USER }}
+        SNOWFLAKE_CONNECTIONS_DUMMY_PASSWORD: ${{ secrets.TGT_PASSWORD }}
         SNOWFLAKE_CONNECTIONS_DUMMY_ROLE: TRAINING_ROLE
         SNOWFLAKE_CONNECTIONS_DUMMY_WAREHOUSE: TEAM3_WH
       run: snow connection test --connection Dummy
