@@ -25,7 +25,7 @@ jobs:
       run: docker build --rm --platform linux/amd64 -t streamlit-app -f src/docker/Dockerfile .
 
     # Snowflake CLI installation
-    - uses: Snowflake-Labs/snowflake-cli-action@latest
+    - uses: Snowflake-Labs/snowflake-cli-action@v1.5
       with:
         cli-version: "latest"
         default-config-file-path: "config.toml"
