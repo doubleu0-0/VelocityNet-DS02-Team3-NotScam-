@@ -1,0 +1,9 @@
+[connections]
+[connections.Dummy]
+account = "BOB84066"
+user = "FLAMINGO"
+password = "Snowflake777js"
+warehouse = "TEAM3_WH"
+role = "TEAM3_MASTER_ADMIN"
+database = "TEAM3_DB"
+schema = "TEAM3_SCHEMA"
