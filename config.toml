@@ -1,7 +1,7 @@
 [connections]
 [connections.Dummy]
-account = "test"
-user = "test"
-password = "test"
-warehouse = "test"
-role = "test"
+account = "SFEDU02.BOB84066.snowflakecomputing.com"
+user = "FLAMINGO"
+password = "Jsrjkimchi06"
+warehouse = "TEAM3_WH"
+role = "TRAINING_ROLE"
