@@ -35,6 +35,6 @@ jobs:
       run: snow --version
     - name: Test Connection
       env:
-        SNOWFLAKE_CONNECTIONS_DUMMY_ROLE: TRAINING_ROLE
-        SNOWFLAKE_CONNECTIONS_DUMMY_WAREHOUSE: FLAMINGO_WH
+        SNOWFLAKE_CONNECTIONS_DUMMY_ROLE: TEAM3_MASTER_ADMIN
+        SNOWFLAKE_CONNECTIONS_DUMMY_WAREHOUSE: TEAM3_WH
       run: snow connection test --connection Dummy
