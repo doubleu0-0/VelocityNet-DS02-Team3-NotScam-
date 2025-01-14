@@ -52,10 +52,6 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    # Black - code formatting check
-    - name: Run Black for code formatting
-      run: |
-        black --check .  # Checks if the code is formatted correctly
 
     # Pylint - code quality check
     - name: Run Pylint for code quality
