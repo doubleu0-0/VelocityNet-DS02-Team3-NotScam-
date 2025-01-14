@@ -1,6 +1,6 @@
 name: Continuous Deployment Of Docker Image to Snowpark Container Services
 
-on: [push]
+on: [push, pull_request]
 
 # Set Environmental Variables
 env:
@@ -47,6 +47,39 @@ jobs:
 
 
 
+
+
+
+    # Run tests with coverage
+    - name: Run tests with coverage
+      run: |
+        pytest --cov=. tests/
+
+    # Generate a coverage report in XML format
+    - name: Run tests with coverage and generate XML report
+      run: |
+        pytest --cov=. tests/ --cov-report=xml tests/
+
+    # Upload the coverage report
+    - name: Upload Coverage Report
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage-report
+        path: coverage.xml
+
+
+
+
+
+
+
+
+      
+
+
+
+
     # Install dependencies including Black and Pylint
     - name: Install dependencies
       run: |
@@ -64,3 +97,4 @@ jobs:
     - name: Auto-sort imports with isort
       run: |
         isort .  # Automatically sorts imports
+
