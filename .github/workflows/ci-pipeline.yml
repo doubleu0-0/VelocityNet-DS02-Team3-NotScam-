@@ -53,7 +53,14 @@ jobs:
         pip install -r requirements.txt
 
 
-    # Pylint - code quality check
-    - name: Run Pylint for code quality
+    # Black - code formatting
+    - name: Run Black for code formatting
       run: |
-        pylint $(find . -name "*.py")  # Run Pylint on all Python files
+        black .  # Automatically formats the code
+
+
+
+    # Auto-sort imports with isort
+    - name: Auto-sort imports with isort
+      run: |
+        isort .  # Automatically sorts imports
