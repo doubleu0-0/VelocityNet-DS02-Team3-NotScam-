@@ -19,6 +19,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      
     - name: Docker Login
       run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
     - name: Run a command
@@ -42,3 +43,21 @@ jobs:
         SNOWFLAKE_CONNECTIONS_DUMMY_DATABASE: ${{ env.SNOWFLAKE_CONNECTIONS_DUMMY_DATABASE }}  # Reference database
         SNOWFLAKE_CONNECTIONS_DUMMY_SCHEMA: ${{ env.SNOWFLAKE_CONNECTIONS_DUMMY_SCHEMA }}  # Reference schema
       run: snow connection test --connection Dummy
+
+
+
+
+    # Install dependencies including Black and Pylint
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    # Black - code formatting check
+    - name: Run Black for code formatting
+      run: |
+        black --check .  # Checks if the code is formatted correctly
+
+    # Pylint - code quality check
+    - name: Run Pylint for code quality
+      run: |
+        pylint $(find . -name "*.py")  # Run Pylint on all Python files
