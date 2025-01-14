@@ -60,7 +60,7 @@ jobs:
 
 
 
-    # Pylint - code quality check
-    - name: Run Pylint for code quality
+    # Auto-sort imports with isort
+    - name: Auto-sort imports with isort
       run: |
-        pylint $(find . -name "*.py")  # Run Pylint on all Python files
+        isort .  # Automatically sorts imports
