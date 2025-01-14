@@ -52,10 +52,12 @@ jobs:
       run: |
         pip install -r requirements.txt
 
+
     # Black - code formatting
     - name: Run Black for code formatting
       run: |
         black .  # Automatically formats the code
+
 
 
     # Pylint - code quality check
