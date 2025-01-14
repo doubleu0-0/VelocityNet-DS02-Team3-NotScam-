@@ -19,6 +19,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    # Install dependencies including Black and Pylint
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    # Black - code formatting check
+    - name: Run Black for code formatting
+      run: |
+        black --check .  # Checks if the code is formatted correctly
+
+    # Pylint - code quality check
+    - name: Run Pylint for code quality
+      run: |
+        pylint $(find . -name "*.py")  # Run Pylint on all Python files
+      
     - name: Docker Login
       run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
     - name: Run a command
