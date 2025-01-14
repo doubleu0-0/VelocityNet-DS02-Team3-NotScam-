@@ -1,4 +1,4 @@
 streamlit==1.27.2
 streamlit-option-menu==0.3.2
-pylint==2.15.0
+isort==5.9.3
 black==23.3.0
