@@ -25,7 +25,7 @@ jobs:
     - name: Run a command
       run: echo "User=$DOCKER_USER"
     - name: Docker build image
-      run: docker build --rm --platform linux/amd64 -t streamlit-app -f src/docker/Dockerfile .
+      run: docker build --rm --platform linux/amd64 -t Dockerapp-app -f src/docker/Dockerfile .
 
     # Snowflake CLI installation
     - uses: Snowflake-Labs/snowflake-cli-action@v1.5
