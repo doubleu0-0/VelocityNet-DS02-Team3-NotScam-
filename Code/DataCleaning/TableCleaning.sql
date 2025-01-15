@@ -1,6 +1,6 @@
 -- Xue Cong Table Cleaning
 -- Cleaning Product_Subcategory_Clean
-CREATE OR REPLACE TABLE PRODUCT_SUBCATEGORY_CLEAN AS 
+CREATE OR REPLACE TABLE PRODUCT_SUBCATEGORY_CLEANED AS 
 SELECT
     ProductSubcategoryID,
     ProductCategoryID,
@@ -11,7 +11,7 @@ WHERE NAME IS NOT NULL;
 
 
 -- Cleaning Product_Inventory_Clean
-CREATE OR REPLACE TABLE PRODUCT_INVENTORY_CLEAN AS
+CREATE OR REPLACE TABLE PRODUCT_INVENTORY_CLEANED AS
 SELECT
     ProductID,
     LocationID,
@@ -25,7 +25,7 @@ WHERE MODIFIEDDATE IS NOT NULL AND PRODUCTID IS NOT NULL;
 
 
 -- Cleaning Product_Category
-CREATE OR REPLACE TABLE PRODUCT_CATEGORY_CLEAN AS
+CREATE OR REPLACE TABLE PRODUCT_CATEGORY_CLEANED AS
 SELECT
     ProductCategoryID,
     name
@@ -35,7 +35,7 @@ WHERE NAME IS NOT NULL;
 
 
 -- Cleaning Sales_Store table
-CREATE OR REPLACE TABLE Sales_Store_Cleaned AS
+CREATE OR REPLACE TABLE SALES_STORE_CLEANED AS
 SELECT
     BusinessEntityID,
     Name,
@@ -56,7 +56,7 @@ WHERE NAME IS NOT NULL;
 
 
 -- Clean Production_Product_Clean
-CREATE OR REPLACE TABLE PRODUCTION_PRODUCT_CLEAN AS
+CREATE OR REPLACE TABLE PRODUCTION_PRODUCT_CLEANED AS
 SELECT
     ProductID,
     Name,
@@ -354,7 +354,7 @@ SELECT * FROM PURCHASING_VENDOR_CLEANED
 -- Jaden Table Cleaning    
 -- cleaning for Sales_SalesTerritory
 -- select needed columns and standardise data columns
-CREATE OR REPLACE TABLE Sales_SalesTerritory_clean AS
+CREATE OR REPLACE TABLE SALES_SALESTERRITORY_CLEANED AS
 SELECT 
 TERRITORYID,
 NAME, 
@@ -367,7 +367,7 @@ FROM Sales_SalesTerritory
 
 -- cleaning for Sales_Customer
 -- select needed columns
-CREATE OR REPLACE TABLE Sales_Customer_clean AS
+CREATE OR REPLACE TABLE SALES_CUSTOMER_CLEANED AS
 SELECT 
 CUSTOMERID,
 PERSONID,
@@ -385,7 +385,7 @@ FROM Sales_Customer
 
 -- cleaning for Sales_SalesOrderHeader
 -- select needed columns
-CREATE OR REPLACE TABLE Sales_SalesOrderHeader_clean AS
+CREATE OR REPLACE TABLE SALES_SALESORDERHEADER_CLEANED AS
 SELECT 
 SALESORDERID,
 ORDERDATE::DATE AS ORDERDATE,
@@ -413,7 +413,7 @@ FROM Sales_SalesOrderHeader
 
 -- cleaning for Sales_SalesOrderDetail
 -- select needed columns
-CREATE OR REPLACE TABLE Sales_SalesOrderDetail_clean AS
+CREATE OR REPLACE TABLE SALES_SALESORDERDETAIL_CLEANED AS
 SELECT SALESORDERID,
 SALESORDERDETAILID,
 CARRIERTRACKINGNUMBER,
@@ -432,7 +432,7 @@ FROM Sales_SalesOrderDetail
 
 -- cleaning for HumanResources_Department
 -- select needed columns
-CREATE OR REPLACE TABLE HumanResources_Department_clean AS
+CREATE OR REPLACE TABLE HUMANRESOURCES_DEPARTMENT_CLEANED AS
 SELECT 
 DEPARTMENTID,
 NAME,
