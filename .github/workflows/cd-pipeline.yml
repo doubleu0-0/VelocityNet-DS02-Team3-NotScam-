@@ -58,7 +58,7 @@ jobs:
     steps:
     - name: Test Prometheus Connection
       run: |
-        curl -s http://localhost:9090/api/v1/status/buildinfo || echo "Prometheus server not connected"
+        curl -s http://localhost:9090/api/v1/status/buildinfo && echo "Prometheus is connected" || echo "Prometheus server not connected"
 
     - name: Query Prometheus for Metrics
       run: |
