@@ -1,4 +1,4 @@
-name: Continuous Deployment with Prometheus Monitoring
+name: Continuous Deployment with Prometheus Monitoring in Docker
 
 on:
   push:
@@ -14,17 +14,34 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    # Step 2: Install Prometheus Exporter
-    - name: Install Prometheus Exporter
-      run: |
-        pip install prometheus-client
+    # Step 2: Docker Login (Optional if pushing images to a registry)
+    - name: Docker Login
+      run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
 
-    # Step 3: Deployment Commands
-    - name: Deploy Application
+    # Step 3: Build Docker Images
+    - name: Build Application Docker Image
+      run: docker build --rm -t app-container -f Dockerfile .
+
+    - name: Build Prometheus Docker Image
       run: |
-        echo "Deploying application..."
-        # Add your deployment commands here
-        echo "Application deployed successfully."
+        echo "Building Prometheus Docker container..."
+        cat <<EOF > prometheus.yml
+        global:
+          scrape_interval: 15s
+        scrape_configs:
+          - job_name: 'application'
+            static_configs:
+              - targets: ['app-container:8000']  # Application exposes metrics on port 8000
+        EOF
+        docker run -d -p 9090:9090 -v $(pwd)/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+
+    # Step 4: Deploy Both Containers
+    - name: Run Docker Containers
+      run: |
+        echo "Starting application container..."
+        docker run -d --name app-container -p 8000:8000 app-container
+        echo "Starting Prometheus container..."
+        docker run -d --name prometheus-container -p 9090:9090 prom/prometheus
 
   monitor:
     runs-on: ubuntu-latest
@@ -39,18 +56,16 @@ jobs:
     # Step 2: Query Prometheus for Metrics
     - name: Query Metrics from Prometheus
       run: |
-        # Replace with your Prometheus query
         QUERY_RESULT=$(curl -s "http://localhost:9090/api/v1/query?query=up")
         echo "Prometheus query result: $QUERY_RESULT"
 
     # Step 3: Validate Metrics
     - name: Validate Application Metrics
       run: |
-        echo "Validating Prometheus metrics..."
-        # Example of checking if application is running
-        APP_UP=$(curl -s "http://localhost:9090/api/v1/query?query=your_app_metric_up")
+        APP_UP=$(curl -s "http://localhost:9090/api/v1/query?query=my_app_up")
         if [ "$APP_UP" != "1" ]; then
           echo "Application is not running properly!"
           exit 1
         fi
         echo "Application metrics validated successfully."
+
