@@ -89,7 +89,7 @@ jobs:
 
 
 
-    # Black - code formatting
+    # Black - code formatting for python files
     - name: Run Black for code formatting
       run: |
         black .  # Automatically formats the code
@@ -98,14 +98,9 @@ jobs:
     - name: Auto-sort imports with isort
       run: |
         isort .  # Automatically sorts imports
-
-    # Install sqlfluff
-    - name: Install sqlfluff
-      run: |
-        pip install sqlfluff
     
     # Run sqlfluff to check and format SQL files
     - name: Run sqlfluff to format SQL files
       run: |
-        sqlfluff fix --dialect snowflake --recursive .
+        sqlfluff fix --dialect snowflake .
         sqlfluff lint --dialect snowflake .
