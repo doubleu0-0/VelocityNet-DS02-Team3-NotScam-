@@ -1,5 +1,7 @@
-on:
-  workflow_dispatch:
+name: Test
+
+on: [push, pull_request]
+
 
 jobs:
   example-job:
