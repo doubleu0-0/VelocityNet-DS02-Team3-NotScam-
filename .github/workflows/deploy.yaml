@@ -33,20 +33,29 @@ jobs:
       run: |
         docker build -t $IMAGE_NAME:latest -f src/docker/Dockerfile .
 
-    # Tag the image for versioning
     - name: Tag Docker Image
       run: |
-        GIT_SHA=$(git rev-parse --short HEAD | tr -cd '[:alnum:]._-')
+        # Get the short commit SHA
+        GIT_SHA=$(git rev-parse --short HEAD)
+
+        # Check if GIT_SHA is valid
         if [ -z "$GIT_SHA" ]; then
-          echo "GIT_SHA is empty. Exiting."
+          echo "Error: GIT_SHA is empty. Exiting."
           exit 1
         fi
+
+        # Tag the image
         echo "Tagging image with GIT_SHA: $GIT_SHA"
         docker tag $IMAGE_NAME:latest $IMAGE_NAME:$GIT_SHA
 
     - name: Push Docker Image
       run: |
         echo "Pushing $IMAGE_NAME:latest"
+        docker push $IMAGE_NAME:latest
+
+        echo "Pushing $IMAGE_NAME:$GIT_SHA"
+        docker push $IMAGE_NAME:$GIT_SHA
+
         docker push $IMAGE_NAME:latest
         echo "Pushing $IMAGE_NAME:$GIT_SHA"
         docker push $IMAGE_NAME:$GIT_SHA
