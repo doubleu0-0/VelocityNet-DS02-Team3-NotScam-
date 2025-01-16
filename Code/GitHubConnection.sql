@@ -1,29 +1,29 @@
-use role training_role;
+USE ROLE training_role;
 
-create or replace secret github_secret
-    type = password
-    username = 'doubleu0-0' 
-    password = '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'; 
+-- Create or replace secret
+CREATE OR REPLACE SECRET github_secret
+    TYPE = 'PASSWORD'
+    USERNAME = 'doubleu0-0'
+    PASSWORD = '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';
 
-create or replace api integration git_api_integration_team3
-    api_provider = git_https_api
-    api_allowed_prefixes = ('https://github.com/doubleu0-0') 
+-- Create or replace API integration
+CREATE OR REPLACE API INTEGRATION git_api_integration_team3
+    API_PROVIDER = 'git_https_api'
+    API_ALLOWED_PREFIXES = ('https://github.com/doubleu0-0')
+    ALLOWED_AUTHENTICATION_SECRETS = (github_secret)
+    ENABLED = TRUE;
 
+-- Create or replace Git repository
+CREATE OR REPLACE GIT REPOSITORY VelocityNet
+    API_INTEGRATION = git_api_integration_team3
+    GIT_CREDENTIALS = github_secret
+    ORIGIN = 'https://github.com/doubleu0-0/VelocityNet-DS02-Team3-NotScam-';
 
-    allowed_authentication_secrets = (github_secret)
-    enabled = true;
+-- Show repos added to Snowflake
+SHOW GIT REPOSITORIES;
 
-create or replace git repository VelocityNet
-    api_integration = git_api_integration
-    git_credentials = github_secret
-    origin = 'https://github.com/doubleu0-0/VelocityNet-DS02-Team3-NotScam-';
+-- Show branches in the repo
+SHOW GIT BRANCHES IN GIT REPOSITORY VelocityNet;
 
-
--- Show repos added to snowflake.
-show git repositories;
-
--- Show branches in the repo.
-show git branches in git repository VelocityNet;
-
--- List files.
-ls @VelocityNet/branches/main;
+-- List files in the repository
+LS @VelocityNet/branches/main;
