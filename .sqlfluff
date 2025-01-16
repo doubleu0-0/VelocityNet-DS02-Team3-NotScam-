@@ -3,3 +3,7 @@ dialect = snowflake
 
 [rules]
 L031 = disabled
+
+[formatter]
+indent_unit = space  # or 'tab' for tabs
+indent_size = 4  # or another value depending on your style
