@@ -4,9 +4,6 @@ on: [push, pull_request]
 
 # Set Environmental Variables
 env:
-  DOCKER_USER: ${{ secrets.DOCKER_USER }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-  DOCKER_LOGIN_NAME: ${{ secrets.DOCKER_LOGIN_NAME }}
   SNOWFLAKE_CONNECTIONS_DUMMY_ACCOUNT: ${{ secrets.TGT_ACCOUNT }}
   SNOWFLAKE_CONNECTIONS_DUMMY_USER: ${{ secrets.TGT_USER }}
   SNOWFLAKE_CONNECTIONS_DUMMY_PASSWORD: ${{ secrets.TGT_PASSWORD }}
@@ -19,13 +16,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-
-    - name: Docker Login
-      run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
-    - name: Run a command
-      run: echo "User=$DOCKER_USER"
-    - name: Docker build image
-      run: docker build --rm --platform linux/amd64 -t streamlit-app -f src/docker/Dockerfile .
 
     # Snowflake CLI installation
     - uses: Snowflake-Labs/snowflake-cli-action@v1.5
