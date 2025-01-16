@@ -36,12 +36,17 @@ jobs:
     # Tag the image for versioning
     - name: Tag Docker Image
       run: |
-        GIT_SHA=$(git rev-parse --short HEAD)
-        echo "Using commit SHA: $GIT_SHA"
+        GIT_SHA=$(git rev-parse --short HEAD | tr -cd '[:alnum:]._-')
+        if [ -z "$GIT_SHA" ]; then
+          echo "GIT_SHA is empty. Exiting."
+          exit 1
+        fi
+        echo "Tagging image with GIT_SHA: $GIT_SHA"
         docker tag $IMAGE_NAME:latest $IMAGE_NAME:$GIT_SHA
 
-    # Push the Docker image to the registry
     - name: Push Docker Image
       run: |
+        echo "Pushing $IMAGE_NAME:latest"
         docker push $IMAGE_NAME:latest
+        echo "Pushing $IMAGE_NAME:$GIT_SHA"
         docker push $IMAGE_NAME:$GIT_SHA
