@@ -1,12 +1,6 @@
 name: Continuous Deployment Of Docker Image to Snowpark Container Services
 
-on: 
-  push:
-    branches:
-      - test
-  pull_request:
-    branches:
-      - main
+on: [push, pull_request]
 
 # Set Environmental Variables
 env:
@@ -104,9 +98,9 @@ jobs:
 
     - name: Commit changes
       run: |
-        git add .
+        git add .  # Stage all changes
         git commit -m "Fix SQL issues with sqlfluff" || echo "No changes to commit"
-    
-    - name: Push changes to the branch
+
+    - name: Push changes to the current branch
       run: |
-        git push origin ${{ github.ref_name }}
+        git push origin ${{ github.ref_name }}  # Push changes back to the branch it's running from
