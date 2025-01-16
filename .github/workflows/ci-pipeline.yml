@@ -89,14 +89,18 @@ jobs:
 
 
 
-    # Black - code formatting
+    # Black - code formatting for python files
     - name: Run Black for code formatting
       run: |
         black .  # Automatically formats the code
-
-
 
     # Auto-sort imports with isort
     - name: Auto-sort imports with isort
       run: |
         isort .  # Automatically sorts imports
+    
+    # Run sqlfluff to check and format SQL files
+    - name: Run sqlfluff to format SQL files
+      run: |
+        sqlfluff fix --dialect snowflake --force --disable-noqa .
+        sqlfluff lint --dialect snowflake .

@@ -1,0 +1,7 @@
+[sqlfluff]
+dialect = snowflake
+exclude_rules = L031, L012
+
+[formatter]
+indent_unit = space 
+indent_size = 4 
