@@ -1,6 +1,12 @@
 name: Continuous Deployment Of Docker Image to Snowpark Container Services
 
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - test
+  pull_request:
+    branches:
+      - main
 
 # Set Environmental Variables
 env:
@@ -95,7 +101,7 @@ jobs:
       run: |
         git fetch origin ${{ github.ref_name }}  # Fetch the branch
         git checkout ${{ github.ref_name }}     # Switch to the branch
-    
+
     - name: Commit changes
       run: |
         git add .
@@ -104,4 +110,3 @@ jobs:
     - name: Push changes to the branch
       run: |
         git push origin ${{ github.ref_name }}
-
