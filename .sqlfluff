@@ -1,0 +1,5 @@
+[sqlfluff]
+dialect = snowflake
+
+[rules]
+L031 = disabled
