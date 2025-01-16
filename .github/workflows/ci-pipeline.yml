@@ -1,4 +1,4 @@
-name: Continuous Deployment Of Docker Image to Snowpark Container Services
+name: Continuous integration with formatting and testing checks
 
 on: [push, pull_request]
 
