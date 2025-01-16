@@ -91,7 +91,17 @@ jobs:
         git config --global user.email "${{ github.actor }}@users.noreply.github.com"
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
 
-    - name: Push changes to the current branch
+    - name: Check out the branch
       run: |
-        git branch -M ${{ github.ref_name }}
-        git push origin ${{ github.ref_name }}  # Push changes back to the same branch
+        git fetch origin ${{ github.ref_name }}  # Fetch the branch
+        git checkout ${{ github.ref_name }}     # Switch to the branch
+    
+    - name: Commit changes
+      run: |
+        git add .
+        git commit -m "Fix SQL issues with sqlfluff" || echo "No changes to commit"
+    
+    - name: Push changes to the branch
+      run: |
+        git push origin ${{ github.ref_name }}
+
