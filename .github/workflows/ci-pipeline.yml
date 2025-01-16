@@ -81,7 +81,7 @@ jobs:
     - name: Run sqlfluff to format SQL files
       continue-on-error: true
       run: |
-        sqlfluff fix --dialect snowflake --force --disable-noqa --verbose .
+        sqlfluff fix --dialect snowflake --force --disable-noqa --verbose --parallel .
         sqlfluff lint --dialect snowflake --verbose .
 
     # Commit changes to the current branch
