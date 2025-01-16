@@ -49,14 +49,6 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-
-        
-
-
-
-
-
-
     # Run tests with coverage
     - name: Run tests with coverage
       run: |
@@ -75,20 +67,6 @@ jobs:
         name: coverage-report
         path: coverage.xml
 
-
-
-
-
-
-
-
-      
-
-
-
-
-
-
     # Black - code formatting for python files
     - name: Run Black for code formatting
       run: |
@@ -98,12 +76,12 @@ jobs:
     - name: Auto-sort imports with isort
       run: |
         isort .  # Automatically sorts imports
-    
+
     # Run sqlfluff to fix SQL files
-    - name: Run sqlfluff to format SQL files
+    - name: Run sqlfluff to fix SQL files
       run: |
         sqlfluff fix --dialect snowflake --force --disable-noqa --verbose .
-    
+
     # Commit changes to the test branch
     - name: Commit changes
       run: |
@@ -111,12 +89,6 @@ jobs:
         git config user.email "actions@github.com"
         git add .
         git commit -m "Fix SQL issues with sqlfluff" || echo "No changes to commit"
-    
-    # Run sqlfluff lint to check for remaining issues
-    - name: Run sqlfluff lint
-      run: |
-        sqlfluff lint --dialect snowflake --verbose .
-
 
     # Push changes to test branch
     - name: Push changes to test branch
