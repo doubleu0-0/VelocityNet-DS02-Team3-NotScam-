@@ -1,16 +1,42 @@
-name: Deploy Prometheus and Grafana
-on:
+name: Deploy Docker Image
+
+on: 
   push:
-    branches: [ main ]
+    branches:
+      - main  # Only runs when pushed to main
+
+# Set Environmental Variables
+env:
+  DOCKER_USER: ${{ secrets.DOCKER_USER }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  DOCKER_REGISTRY: "docker.io"  # Push into dockerhub repo
+  IMAGE_NAME: "emailsender/snowflaketeam3"
 
 jobs:
-  Prometheus-Deploy:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - id: deploy
-      name: Deploy
-      uses: bitovi/github-actions-deploy-prometheus@v0.1.1
-      with:
-        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        env_ghs: ${{ secrets.DOT_ENV }}
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Login to Docker registry
+    - name: Docker Login
+      run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY
+
+    # Build Docker image
+    - name: Build Docker Image
+      run: |
+        docker build -t $IMAGE_NAME:latest -f src/docker/Dockerfile .
+
+    # Tag the image for versioning
+    - name: Tag Docker Image
+      run: |
+        GIT_SHA=$(git rev-parse --short HEAD)
+        docker tag $IMAGE_NAME:latest $IMAGE_NAME:$GIT_SHA
+
+    # Push the Docker image to the registry
+    - name: Push Docker Image
+      run: |
+        docker push $IMAGE_NAME:latest
+        docker push $IMAGE_NAME:$GIT_SHA
