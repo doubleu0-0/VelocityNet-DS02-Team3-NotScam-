@@ -102,5 +102,5 @@ jobs:
     # Run sqlfluff to check and format SQL files
     - name: Run sqlfluff to format SQL files
       run: |
-        sqlfluff fix --dialect snowflake --no-interaction .
+        sqlfluff fix --dialect fix -h
         sqlfluff lint --dialect snowflake .
