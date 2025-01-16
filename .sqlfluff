@@ -1,6 +1,6 @@
 [sqlfluff]
 dialect = snowflake
-exclude_rules = L031
+exclude_rules = L031, L012
 
 [formatter]
 indent_unit = space 
