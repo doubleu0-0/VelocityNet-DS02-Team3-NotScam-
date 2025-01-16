@@ -1,0 +1,37 @@
+name: Deploy Prometheus and Grafana
+on:
+  push:
+    branches: main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Prometheus and Grafana
+        uses: your-org/your-action@v1
+        with:
+          # AWS Credentials
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_default_region: us-east-1
+
+          # EC2 Instance Configuration
+          aws_ec2_instance_type: t2.micro
+          aws_ec2_instance_root_vol_size: 10
+          aws_ec2_instance_public_ip: true
+          aws_elb_create: false
+
+          # Prometheus Configuration
+          prometheus_scrape_interval: 30s
+          prometheus_retention_period: 7d
+
+          # Grafana Configuration
+          grafana_scrape_interval: 30s
+
+          # Networking
+          aws_vpc_create: false
+          aws_vpc_id: vpc-0c62df60fc4632d17
+          aws_vpc_subnet_id: subnet-0c81c9b8b279e490a
+
+          # Stack Management
+          tf_stack_destroy: false
