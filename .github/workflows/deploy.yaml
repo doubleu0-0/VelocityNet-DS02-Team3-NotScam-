@@ -1,0 +1,16 @@
+name: Deploy Prometheus and Grafana
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  Prometheus-Deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - id: deploy
+      name: Deploy
+      uses: bitovi/github-actions-deploy-prometheus@v0.1.1
+      with:
+        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        env_ghs: ${{ secrets.DOT_ENV }}
