@@ -72,8 +72,8 @@ jobs:
     - name: Run sqlfluff to format SQL files
       continue-on-error: true
       run: |
-        sqlfluff fix --dialect snowflake --force --disable-noqa --debug **/*.sql
-        sqlfluff lint --dialect snowflake --debug .
+        sqlfluff fix --dialect snowflake --force --disable-noqa --verbose **/*.sql
+        sqlfluff lint --dialect snowflake --verbose .
 
     # Commit changes to the current branch
     - name: Set up GitHub credentials
