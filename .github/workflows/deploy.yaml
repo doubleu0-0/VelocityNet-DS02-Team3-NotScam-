@@ -9,7 +9,6 @@ on:
 env:
   DOCKER_USER: ${{ secrets.DOCKER_USER }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-  DOCKER_REGISTRY: "docker.io"  # Push into dockerhub repo
   IMAGE_NAME: "emailsender/snowflaketeam3"
 
 jobs:
@@ -20,9 +19,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # Debug: Verify IMAGE_NAME
+    - name: Debug IMAGE_NAME
+      run: |
+        echo "Image Name: $IMAGE_NAME"
+
     # Login to Docker registry
     - name: Docker Login
-      run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY
+      run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin docker.io
 
     # Build Docker image
     - name: Build Docker Image
@@ -33,6 +37,7 @@ jobs:
     - name: Tag Docker Image
       run: |
         GIT_SHA=$(git rev-parse --short HEAD)
+        echo "Using commit SHA: $GIT_SHA"
         docker tag $IMAGE_NAME:latest $IMAGE_NAME:$GIT_SHA
 
     # Push the Docker image to the registry
