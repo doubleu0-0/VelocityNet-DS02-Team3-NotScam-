@@ -1,7 +1,7 @@
 name: Basic deploy
 on:
   push:
-    branches: main
+    branches: [ main ]
 
 jobs:
   Prometheus-Deploy:
@@ -13,3 +13,4 @@ jobs:
       with:
         aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        env_ghs: ${{ secrets.DOT_ENV }}
