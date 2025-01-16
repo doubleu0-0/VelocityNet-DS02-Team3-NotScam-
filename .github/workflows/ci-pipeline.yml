@@ -26,15 +26,16 @@ jobs:
     # Use the CLI
     - name: Test version
       run: snow --version
+
     - name: Test Connection
       env:
         SNOWFLAKE_CONNECTIONS_DUMMY_ROLE: TEAM3_MASTER_ADMIN
         SNOWFLAKE_CONNECTIONS_DUMMY_WAREHOUSE: TEAM3_WH
-        SNOWFLAKE_CONNECTIONS_DUMMY_DATABASE: ${{ env.SNOWFLAKE_CONNECTIONS_DUMMY_DATABASE }}  # Reference database
-        SNOWFLAKE_CONNECTIONS_DUMMY_SCHEMA: ${{ env.SNOWFLAKE_CONNECTIONS_DUMMY_SCHEMA }}  # Reference schema
+        SNOWFLAKE_CONNECTIONS_DUMMY_DATABASE: ${{ env.SNOWFLAKE_CONNECTIONS_DUMMY_DATABASE }}
+        SNOWFLAKE_CONNECTIONS_DUMMY_SCHEMA: ${{ env.SNOWFLAKE_CONNECTIONS_DUMMY_SCHEMA }}
       run: snow connection test --connection Dummy
 
-    # Install dependencies including Black and Pylint
+    # Install dependencies
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
@@ -60,30 +61,37 @@ jobs:
     # Black - code formatting for python files
     - name: Run Black for code formatting
       run: |
-        black .  # Automatically formats the code
+        black .
 
     # Auto-sort imports with isort
     - name: Auto-sort imports with isort
       run: |
-        isort .  # Automatically sorts imports
+        isort .
 
     # Run sqlfluff to check and format SQL files
     - name: Run sqlfluff to format SQL files
       continue-on-error: true
       run: |
-        sqlfluff fix --dialect snowflake --force --disable-noqa .
-        sqlfluff lint --dialect snowflake .
-    
-    # Commit changes to the test branch
+        sqlfluff fix --dialect snowflake --force --disable-noqa --verbose **/*.sql
+        sqlfluff lint --dialect snowflake --verbose .
+
+    # Commit changes to the current branch
+    - name: Set up GitHub credentials
+      run: |
+        git config --global user.name "${{ github.actor }}"
+        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
+    - name: Check out the branch
+      run: |
+        git fetch origin ${{ github.ref_name }}  # Fetch the branch
+        git checkout ${{ github.ref_name }}     # Switch to the branch
+
     - name: Commit changes
       run: |
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
-        git add .
+        git add .  # Stage all changes
         git commit -m "Fix SQL issues with sqlfluff" || echo "No changes to commit"
-    
-    # Push changes to test branch
-    - name: Push changes to test branch
-      run: |
-        git push origin test
 
+    - name: Push changes to the current branch
+      run: |
+        git push origin ${{ github.ref_name }}  # Push changes back to the branch it's running from
