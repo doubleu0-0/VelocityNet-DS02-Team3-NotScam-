@@ -2,7 +2,7 @@ name: Continuous integration with formatting and testing checks
 
 on: [push, pull_request]
 
-# Set Environmental Variables
+# Set Environmental Variables 
 env:
   SNOWFLAKE_CONNECTIONS_DUMMY_ACCOUNT: ${{ secrets.TGT_ACCOUNT }}
   SNOWFLAKE_CONNECTIONS_DUMMY_USER: ${{ secrets.TGT_USER }}
