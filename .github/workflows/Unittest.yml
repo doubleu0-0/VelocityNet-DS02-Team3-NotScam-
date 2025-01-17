@@ -41,13 +41,6 @@ jobs:
     - name: Verify Converted Files
       run: ls -la Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/
 
-    # Debug conversion output
-    - name: Debug Conversion Output
-      run: ls -la Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/
-
-    - name: Verify Converted Files
-      run: ls -la Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/
-
     # Lint Python files with flake8
     - name: Lint Python files
       run: flake8 Code/DataCleaning --max-line-length=120
