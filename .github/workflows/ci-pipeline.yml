@@ -20,6 +20,7 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
+        
     # Snowflake CLI installation
     - uses: Snowflake-Labs/snowflake-cli-action@v1.5
       with:
@@ -37,7 +38,8 @@ jobs:
         SNOWFLAKE_CONNECTIONS_DUMMY_DATABASE: ${{ env.SNOWFLAKE_CONNECTIONS_DUMMY_DATABASE }}
         SNOWFLAKE_CONNECTIONS_DUMMY_SCHEMA: ${{ env.SNOWFLAKE_CONNECTIONS_DUMMY_SCHEMA }}
       run: snow connection test --connection Dummy
-
+    - name: Verify Python Version
+      run: python --version
     # Install dependencies
     - name: Install dependencies
       run: |
