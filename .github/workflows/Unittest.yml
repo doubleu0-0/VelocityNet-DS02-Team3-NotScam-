@@ -1,40 +1,62 @@
-name: Format, Lint, and Coverage Checks
+name: Report testing
 
 on: [push, pull_request]
 
+env:
+  SNOWFLAKE_CONNECTIONS_DUMMY_ACCOUNT: ${{ secrets.TGT_ACCOUNT }}
+  SNOWFLAKE_CONNECTIONS_DUMMY_USER: ${{ secrets.TGT_USER }}
+  SNOWFLAKE_CONNECTIONS_DUMMY_PASSWORD: ${{ secrets.TGT_PASSWORD }}
+  SNOWFLAKE_CONNECTIONS_DUMMY_DATABASE: "TEAM3_DB"
+  SNOWFLAKE_CONNECTIONS_DUMMY_SCHEMA: "TEAM3_SCHEMA"
+
 jobs:
-  lint-and-coverage:
+  build:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
 
+    # Snowflake CLI installation
+    - uses: Snowflake-Labs/snowflake-cli-action@v1.5
+      with:
+        cli-version: "latest"
+        default-config-file-path: "config.toml"
+
+    # Use the CLI
+    - name: Test version
+      run: snow --version
+
+    - name: Test Connection
+      env:
+        SNOWFLAKE_CONNECTIONS_DUMMY_ROLE: TEAM3_MASTER_ADMIN
+        SNOWFLAKE_CONNECTIONS_DUMMY_WAREHOUSE: TEAM3_WH
+        SNOWFLAKE_CONNECTIONS_DUMMY_DATABASE: ${{ env.SNOWFLAKE_CONNECTIONS_DUMMY_DATABASE }}
+        SNOWFLAKE_CONNECTIONS_DUMMY_SCHEMA: ${{ env.SNOWFLAKE_CONNECTIONS_DUMMY_SCHEMA }}
+      run: snow connection test --connection Dummy
+
     # Install dependencies
     - name: Install dependencies
       run: |
-        pip install flake8 flake8-nb black pytest pytest-cov
-    # Lint Python files with flake8
-    - name: Lint Python files
-      run: flake8 Code/DataCleaning --max-line-length=120
-      continue-on-error: true
-
-    # Lint the specific Jupyter Notebook file
-    - name: Lint Jupyter Notebook file
-      run: flake8 Code/DataCleaning/AUTO_TRANSFORMATION/notebook_app.ipynb --max-line-length=120
+        pip install -r requirements.txt
+    # Run linting with flake8
+    - name: Lint with flake8
+      run: flake8 .
       continue-on-error: true
 
     # Check formatting with black
     - name: Check formatting with black
-      run: black Code/DataCleaning --line-length 120
+      run: black --check .
       continue-on-error: true
 
-    # Run tests with coverage and generate reports
-    - name: Run tests and generate coverage reports
+    # Run static analysis with pylint
+    - name: Static analysis with pylint
+      run: pylint --disable=C,R .
+      continue-on-error: true
+
+    # Generate a coverage report in XML and HTML formats
+    - name: Run tests with coverage and generate reports
       run: |
-        pytest --cov=Code/DataCleaning \
-               --cov=Code/DataCleaning/AUTO_TRANSFORMATION \
-               --cov-report=xml \
-               --cov-report=html
+        pytest --cov=. --cov-report=xml --cov-report=html tests/
       continue-on-error: true
 
     # Upload the XML coverage report
