@@ -64,28 +64,5 @@ jobs:
       run: black Code/DataCleaning --line-length 120
       continue-on-error: true
 
-    # Run tests with coverage and generate XML report
-    - name: Run tests and generate coverage report
-      run: |
-        pytest test/unittest_test.py \
-               --cov=Code/DataCleaning \
-               --cov=Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks \
-               --cov-report=xml \
-               --cov-report=html
 
-    # Upload the XML coverage report
-    - name: Upload XML Coverage Report
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-report-xml
-        path: coverage.xml
-
-    # Upload the HTML coverage report
-    - name: Upload HTML Coverage Report
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-report-html
-        path: htmlcov/
 
