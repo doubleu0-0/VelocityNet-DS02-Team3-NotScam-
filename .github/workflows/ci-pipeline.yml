@@ -29,7 +29,7 @@ jobs:
 
     # Use the CLI
     - name: Test version
-      run: snow 
+      run: snow --version
 
     - name: Test Connection
       env:
