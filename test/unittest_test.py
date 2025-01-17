@@ -32,8 +32,8 @@ def test_sales_store_data():
 
     # Check for null values in the 'ID' column
     if 'ID' in SalesStoreData.columns:
-        null_count = SalesStoreData['ID'].isnull().sum()
-        assert null_count == 0, f"The 'ID' column contains {null_count} null values."
+        null_count = SalesStoreData['BUSINESSENTITYID'].isnull().sum()
+        assert null_count == 0, f"The 'BUSINESSENTITYID' column contains {null_count} null values."
     else:
-        raise AssertionError(f"'ID' column not found in the data. Available columns: {SalesStoreData.columns}")
+        raise AssertionError(f"'BUSINESSENTITYID' column not found in the data. Available columns: {SalesStoreData.columns}")
 
