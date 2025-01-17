@@ -3,7 +3,7 @@ name: Format, Lint, and Coverage Checks
 on: [push, pull_request]
 
 jobs:
-  lint-format-and-coverage:
+  lint-and-coverage:
     runs-on: ubuntu-latest
 
     steps:
@@ -12,31 +12,28 @@ jobs:
     # Install dependencies
     - name: Install dependencies
       run: |
-        pip install flake8 black nbconvert pytest pytest-cov
+        pip install flake8 flake8-nb black pytest pytest-cov
 
     # Lint Python files with flake8
-    - name: Lint Python files with flake8
-      run: flake8 VelocityNet-DS02-Team3-NotScam-/Code/DataCleaning --max-line-length=120
+    - name: Lint Python files
+      run: flake8 Code/DataCleaning --max-line-length=120
       continue-on-error: true
 
-    # Lint Jupyter notebooks
-    - name: Lint Jupyter notebooks
-      run: |
-        mkdir -p AUTO_TRANSFORMATION/converted_notebooks
-        find AUTO_TRANSFORMATION/ -name "*.ipynb" -exec jupyter nbconvert --to script {} --output-dir AUTO_TRANSFORMATION/converted_notebooks \;
-        flake8 AUTO_TRANSFORMATION/converted_notebooks --max-line-length=120
+    # Lint the specific Jupyter Notebook file
+    - name: Lint Jupyter Notebook file
+      run: flake8 Code/DataCleaning/AUTO_TRANSFORMATION/notebook_app.ipynb --max-line-length=120
       continue-on-error: true
 
-    # Check formatting with black for Python files
+    # Check formatting with black
     - name: Check formatting with black
-      run: black VelocityNet-DS02-Team3-NotScam-/Code/DataCleaning --line-length 120
+      run: black Code/DataCleaning --line-length 120
       continue-on-error: true
 
-    # Generate a coverage report in XML and HTML formats
-    - name: Run tests with coverage and generate reports
+    # Run tests with coverage and generate reports
+    - name: Run tests and generate coverage reports
       run: |
-        pytest --cov=VelocityNet-DS02-Team3-NotScam-/Code/DataCleaning \
-               --cov=AUTO_TRANSFORMATION/converted_notebooks \
+        pytest --cov=Code/DataCleaning \
+               --cov=Code/DataCleaning/AUTO_TRANSFORMATION \
                --cov-report=xml \
                --cov-report=html
       continue-on-error: true
@@ -56,3 +53,4 @@ jobs:
       with:
         name: coverage-report-html
         path: htmlcov/
+
