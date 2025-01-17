@@ -1,0 +1,10 @@
+name: app_environment
+channels:
+  - snowflake
+dependencies:
+  - modin=*
+  - pandas=*
+  - snowflake=*
+  - snowflake-sqlalchemy=*
+  - sqlalchemy=*
+  - xmltodict=*
