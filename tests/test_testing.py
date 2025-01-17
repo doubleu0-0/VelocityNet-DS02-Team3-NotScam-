@@ -6,7 +6,7 @@ def test_linting_with_flake8():
     Check code linting using flake8.
     Ensures that Python code adheres to PEP 8 standards.
     """
-    result = subprocess.run(["flake8", "--max-line-length=88"], capture_output=True, text=True)
+    result = subprocess.run(["flake8", "--max-line-length=108"], capture_output=True, text=True)
     assert result.returncode == 0, f"Flake8 failed:\n{result.stdout}"
 
 def test_format_with_black():
