@@ -1,0 +1,8 @@
+black==23.3.0
+pytest==7.2.0
+pytest-cov==3.0.0
+flake8==6.1.0
+pandas==1.5.3
+nbconvert==7.2.10
+flake8-nb==0.4.1
+xmltodict==0.13.0
