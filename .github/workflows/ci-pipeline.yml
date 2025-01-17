@@ -27,6 +27,9 @@ jobs:
         cli-version: "latest"
         default-config-file-path: "config.toml"
 
+    - name: Add pipx to PATH
+      run: echo '/opt/pipx_bin' >> $GITHUB_ENV
+
     # Use the CLI
     - name: Test version
       run: snow --version
