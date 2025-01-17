@@ -1,4 +1,4 @@
-USE ROLE training_role;
+USE ROLE TEAM3_DEVELOPER;
 
 -- Create or replace secret
 CREATE OR REPLACE SECRET github_secret
