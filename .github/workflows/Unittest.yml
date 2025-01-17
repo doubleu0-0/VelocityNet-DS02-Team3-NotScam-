@@ -25,7 +25,13 @@ jobs:
         jupyter nbconvert --to script \
           Code/DataCleaning/AUTO_TRANSFORMATION/notebook_app.ipynb \
           --output-dir=Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks \
-          --output=notebook_app.py
+          --output=notebook_app
+    
+        # Rename to .py if it ends with .txt
+        if [ -f Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.py.txt ]; then
+          mv Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.py.txt \
+             Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.py
+        fi
 
     # Verify Converted Files
     - name: Verify Converted Files
