@@ -13,7 +13,6 @@ jobs:
     - name: Install dependencies
       run: |
         pip install flake8 flake8-nb black pytest pytest-cov
-
     # Lint Python files with flake8
     - name: Lint Python files
       run: flake8 Code/DataCleaning --max-line-length=120
