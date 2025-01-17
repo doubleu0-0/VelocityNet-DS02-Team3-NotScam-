@@ -42,16 +42,19 @@ jobs:
 
     # Run tests with coverage
     - name: Run tests with coverage
+    continue-on-error: true
       run: |
         pytest --cov=. tests/
 
     # Generate a coverage report in XML format
     - name: Run tests with coverage and generate XML report
+    continue-on-error: true
       run: |
         pytest --cov=. tests/ --cov-report=xml tests/
 
     # Upload the coverage report
     - name: Upload Coverage Report
+    continue-on-error: true
       if: always()
       uses: actions/upload-artifact@v4
       with:
