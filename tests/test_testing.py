@@ -1,5 +1,6 @@
 import subprocess
 
+
 def test_linting_with_flake8():
     """
     Check code linting using flake8.
