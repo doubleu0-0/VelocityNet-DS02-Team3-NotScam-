@@ -12,7 +12,7 @@ jobs:
     # Install dependencies
     - name: Install dependencies
       run: |
-        pip install -r requirements2.txt
+        pip install flake8 flake8-nb black pytest pytest-cov nbconvert
 
     # Verify source notebook exists
     - name: Verify Source Notebook Exists
