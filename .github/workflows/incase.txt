@@ -1,4 +1,4 @@
-ame: Continuous Deployment with Prometheus Monitoring
+name: Continuous Deployment with Prometheus Monitoring
 
 on:
   push:
