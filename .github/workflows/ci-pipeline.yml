@@ -30,8 +30,7 @@ jobs:
     - name: Add pipx to PATH
       run: echo '/opt/pipx_bin' >> $GITHUB_ENV
 
-    # Use the CLI
-    - name: Test version
+    - name: Verify Snow CLI
       run: snow --version
 
     - name: Test Connection
