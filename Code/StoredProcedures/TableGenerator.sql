@@ -1,6 +1,6 @@
 --by zachariah loy yiqi
 -- returns an IAM policy that grants a Snowflake SQS queue permission to subscribe to the SNS topic.
-select system$get_aws_sns_iam_policy('arn:aws:sns:us-west-2:851725251098:tem3_sns_topic_pipeline');
+SELECT system$get_aws_sns_iam_policy('arn:aws:sns:us-west-2:851725251098:tem3_sns_topic_pipeline');
 
 --create a schema for viewing the datatypes (difference is to include headers inside so the inferschema knows which column is which)
 CREATE OR REPLACE FILE FORMAT CSVFILEFORMATTEAM3INFERENCER
