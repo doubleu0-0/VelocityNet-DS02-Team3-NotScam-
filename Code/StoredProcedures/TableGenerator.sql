@@ -44,7 +44,6 @@ CREATE OR REPLACE PIPE TEAM3_PIPELINE
     
 SELECT *  FROM TEMP_TABLE;
 
-
 -- create a stream to track changes in the data for the temp_table
 CREATE OR REPLACE STREAM TEMP_TABLE_STREAM ON table TEMP_TABLE;
 
