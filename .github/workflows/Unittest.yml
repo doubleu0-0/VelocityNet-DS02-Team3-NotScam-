@@ -67,7 +67,7 @@ jobs:
     # Run tests with coverage and generate XML report
     - name: Run tests and generate coverage report
       run: |
-        pytest test/test_unittest.py \
+        pytest test/unittest_test.py \
                --cov=Code/DataCleaning \
                --cov=Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks \
                --cov-report=xml \
