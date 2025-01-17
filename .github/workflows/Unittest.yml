@@ -27,11 +27,15 @@ jobs:
           --output-dir=Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks \
           --output=notebook_app
     
-        # Rename to .py if it ends with .txt
+        # Forcefully rename to .py if it ends with .py.txt
         if [ -f Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.py.txt ]; then
           mv Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.py.txt \
              Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.py
+        elif [ -f Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.txt ]; then
+          mv Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.txt \
+             Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.py
         fi
+
 
     # Verify Converted Files
     - name: Verify Converted Files
