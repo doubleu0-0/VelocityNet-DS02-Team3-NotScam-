@@ -45,8 +45,15 @@ jobs:
     # Run tests with coverage
     - name: Run tests and generate coverage report
       run: |
-        pytest --cov=Code/DataCleaning --cov-report=xml --cov-report=html
+        pytest --cov=Code/DataCleaning \
+               --cov-report=xml \
+               --cov-report=html \
+               --verbose
       continue-on-error: true
+
+    # Verify Coverage Reports
+    - name: Verify Coverage Reports
+      run: ls -la htmlcov/ coverage.xml
 
     # Upload coverage reports
     - name: Upload Coverage Report
@@ -55,4 +62,3 @@ jobs:
       with:
         name: coverage-report
         path: htmlcov/
-
