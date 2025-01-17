@@ -29,6 +29,9 @@ jobs:
              Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.py
         fi
 
+    - name: Verify Converted Files
+      run: ls -la Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/
+
     # Lint with flake8
     - name: Lint Python files
       run: flake8 . --max-line-length=120
