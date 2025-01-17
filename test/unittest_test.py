@@ -65,7 +65,7 @@ def test_businessentityid_unique(snowflake_session):
 
 def test_column_presence(snowflake_session):
     """Test to check if all expected columns are present in the 'SALES_STORE' table."""
-    expected_columns = {'BUSINESSENTITYID', 'STORENAME', 'DEMOGRAPHICS'}
+    expected_columns = {'BUSINESSENTITYID', 'SALESPERSONID', 'DEMOGRAPHICS'}
     SalesStoreData = snowflake_session.table('SALES_STORE').to_pandas()
     missing_columns = expected_columns - set(SalesStoreData.columns)
     assert not missing_columns, f"The following expected columns are missing: {missing_columns}"
