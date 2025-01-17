@@ -11,8 +11,8 @@ jobs:
 
     # Install dependencies
     - name: Install dependencies
-    run: |
-      pip install flake8 flake8-nb black pytest pytest-cov nbconvert modin[snowflake]
+      run: |
+        pip install flake8 flake8-nb black pytest pytest-cov nbconvert modin[snowflake]
 
     # Verify source notebook exists
     - name: Verify Source Notebook Exists
@@ -35,7 +35,6 @@ jobs:
           mv Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.txt \
              Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.py
         fi
-
 
     # Verify Converted Files
     - name: Verify Converted Files
@@ -80,3 +79,4 @@ jobs:
       with:
         name: coverage-report-html
         path: htmlcov/
+
