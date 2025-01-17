@@ -53,4 +53,3 @@ jobs:
       with:
         name: coverage-report-html
         path: htmlcov/
-
