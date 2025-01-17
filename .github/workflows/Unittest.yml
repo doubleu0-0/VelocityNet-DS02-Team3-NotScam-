@@ -19,7 +19,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install flake8 flake8-nb black pytest pytest-cov nbconvert modin[snowflake] \
-        snowflake-connector-python snowflake-snowpark-python python-dotenv
+        snowflake-connector-python snowflake-snowpark-python python-dotenv pandas
 
 
     # Verify source notebook exists
