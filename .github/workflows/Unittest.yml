@@ -1,0 +1,63 @@
+name: Report testing
+
+on: [push, pull_request]
+
+# Set Environmental Variables
+env:
+  SNOWFLAKE_CONNECTIONS_DUMMY_ACCOUNT: ${{ secrets.TGT_ACCOUNT }}
+  SNOWFLAKE_CONNECTIONS_DUMMY_USER: ${{ secrets.TGT_USER }}
+  SNOWFLAKE_CONNECTIONS_DUMMY_PASSWORD: ${{ secrets.TGT_PASSWORD }}
+  SNOWFLAKE_CONNECTIONS_DUMMY_DATABASE: "TEAM3_DB"
+  SNOWFLAKE_CONNECTIONS_DUMMY_SCHEMA: "TEAM3_SCHEMA"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    # Snowflake CLI installation
+    - uses: Snowflake-Labs/snowflake-cli-action@v1.5
+      with:
+        cli-version: "latest"
+        default-config-file-path: "config.toml"
+
+    # Use the CLI
+    - name: Test version
+      run: snow --version
+
+    - name: Test Connection
+      env:
+        SNOWFLAKE_CONNECTIONS_DUMMY_ROLE: TEAM3_MASTER_ADMIN
+        SNOWFLAKE_CONNECTIONS_DUMMY_WAREHOUSE: TEAM3_WH
+        SNOWFLAKE_CONNECTIONS_DUMMY_DATABASE: ${{ env.SNOWFLAKE_CONNECTIONS_DUMMY_DATABASE }}
+        SNOWFLAKE_CONNECTIONS_DUMMY_SCHEMA: ${{ env.SNOWFLAKE_CONNECTIONS_DUMMY_SCHEMA }}
+      run: snow connection test --connection Dummy
+
+    # Install dependencies
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+
+    # Generate a coverage report in XML and HTML formats
+    - name: Run tests with coverage and generate reports
+      run: |
+        pytest --cov=. --cov-report=xml --cov-report=html tests/
+
+    # Upload the XML coverage report
+    - name: Upload XML Coverage Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report-xml
+        path: coverage.xml
+
+    # Upload the HTML coverage report
+    - name: Upload HTML Coverage Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report-html
+        path: htmlcov/
