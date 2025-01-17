@@ -22,8 +22,9 @@ jobs:
     # Lint Jupyter notebooks
     - name: Lint Jupyter notebooks
       run: |
-        find AUTO_TRANSFORMATION/ -name "*.ipynb" -exec jupyter nbconvert --to script {} \;
-        flake8 AUTO_TRANSFORMATION/ --max-line-length=120
+        mkdir -p AUTO_TRANSFORMATION/converted_notebooks
+        find AUTO_TRANSFORMATION/ -name "*.ipynb" -exec jupyter nbconvert --to script {} --output-dir AUTO_TRANSFORMATION/converted_notebooks \;
+        flake8 AUTO_TRANSFORMATION/converted_notebooks --max-line-length=120
       continue-on-error: true
 
     # Check formatting with black for Python files
@@ -35,7 +36,7 @@ jobs:
     - name: Run tests with coverage and generate reports
       run: |
         pytest --cov=VelocityNet-DS02-Team3-NotScam-/Code/DataCleaning \
-               --cov=AUTO_TRANSFORMATION \
+               --cov=AUTO_TRANSFORMATION/converted_notebooks \
                --cov-report=xml \
                --cov-report=html
       continue-on-error: true
