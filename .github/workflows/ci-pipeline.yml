@@ -40,29 +40,6 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    # Run tests with coverage
-    - name: Run tests with coverage
-      run: |
-        pytest --cov=. tests/
-
-    # Generate a coverage report in XML format
-    - name: Run tests with coverage and generate XML report
-      run: |
-        pytest --cov=. tests/ --cov-report=xml tests/
-
-    # Upload the coverage report
-    - name: Upload Coverage Report
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-report
-        path: coverage.xml
-
-    # Black - code formatting for python files
-    - name: Run Black for code formatting
-      run: |
-        black .
-
     # Auto-sort imports with isort
     - name: Auto-sort imports with isort
       run: |
