@@ -31,7 +31,7 @@ jobs:
       run: echo "PATH=/opt/pipx_bin:$PATH" >> $GITHUB_ENV
       
     - name: Verify Snow CLI
-      run: snow --version
+      run: snow 
 
     - name: Test Connection
       env:
