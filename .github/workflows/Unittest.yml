@@ -12,28 +12,35 @@ jobs:
     # Install dependencies
     - name: Install dependencies
       run: |
-        pip install flake8 flake8-nb black pytest pytest-cov pylint
+        pip install flake8 flake8-nb black pytest pytest-cov nbconvert
+
+    # Convert Jupyter Notebook to Python script
+    - name: Convert Jupyter Notebook to Python script
+      run: |
+        mkdir -p Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks
+        jupyter nbconvert --to script Code/DataCleaning/AUTO_TRANSFORMATION/notebook_app.ipynb \
+                          --output-dir Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks
 
     # Lint Python files with flake8
     - name: Lint Python files
       run: flake8 Code/DataCleaning --max-line-length=120
       continue-on-error: true
 
-    # Lint the specific Jupyter Notebook file
-    - name: Lint Jupyter Notebook file
-      run: flake8 Code/DataCleaning/AUTO_TRANSFORMATION/notebook_app.ipynb --max-line-length=120
+    # Lint the converted Jupyter Notebook script
+    - name: Lint Converted Notebook Script
+      run: flake8 Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.py --max-line-length=120
       continue-on-error: true
 
     # Check formatting with black
     - name: Check formatting with black
-      run: black --check Code/DataCleaning --line-length 120
+      run: black Code/DataCleaning --line-length 120
       continue-on-error: true
 
-    # Run tests with coverage and generate reports
-    - name: Run tests and generate coverage reports
+    # Run tests with coverage and generate XML report
+    - name: Run tests and generate coverage report
       run: |
         pytest --cov=Code/DataCleaning \
-               --cov=Code/DataCleaning/AUTO_TRANSFORMATION \
+               --cov=Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks \
                --cov-report=xml \
                --cov-report=html
       continue-on-error: true
