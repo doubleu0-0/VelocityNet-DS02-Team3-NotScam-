@@ -52,17 +52,7 @@ jobs:
     - name: Lint Python files
       run: flake8 Code/DataCleaning --max-line-length=120
       continue-on-error: true
-
-    # Lint the converted Jupyter Notebook script
-    - name: Lint Converted Notebook Script
-      run: flake8 Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.py --max-line-length=120
-      continue-on-error: true
-
-    # Check formatting with black
-    - name: Check formatting with black
-      run: black Code/DataCleaning --line-length 120
-      continue-on-error: true
-
+      
     # Run tests with coverage and generate XML report
     - name: Run tests and generate coverage report
       run: |
