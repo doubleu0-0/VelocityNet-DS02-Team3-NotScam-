@@ -154,7 +154,7 @@ FROM PURCHASING_PURCHASEORDERHEADER_CLEANED;
 
 -- Jaden Data validation
 -- Sales_SalesTerritory_clean
-Select * from Sales_SalesTerritory_clean;
+SELECT * FROM Sales_SalesTerritory_clean;
 -- check for duplicates
 SELECT TERRITORYID, COUNT(*) AS duplicate_count
 FROM Sales_SalesTerritory_clean
@@ -168,7 +168,7 @@ WHERE TERRITORYID IS NULL;
 SELECT COUNT(TERRITORYID) FROM Sales_SalesTerritory_clean;
 
 -- Sales_Customer_clean
-Select * from Sales_Customer_clean;
+SELECT * FROM Sales_Customer_clean;
 -- check for duplicates
 SELECT CUSTOMERID, COUNT(*) AS duplicate_count
 FROM Sales_Customer_clean
@@ -182,7 +182,7 @@ WHERE CUSTOMERID IS NULL;
 SELECT COUNT(CUSTOMERID) FROM Sales_Customer_clean;
 
 -- Sales_SalesOrderHeader_clean
-Select * from Sales_SalesOrderHeader_clean;
+SELECT * FROM Sales_SalesOrderHeader_clean;
 -- check for duplicates
 SELECT SALESORDERID, COUNT(*) AS duplicate_count
 FROM Sales_SalesOrderHeader_clean
@@ -218,7 +218,7 @@ WHERE sod.SALESORDERID NOT IN (SELECT soh.SALESORDERID FROM Sales_SalesOrderHead
 SELECT COUNT(SALESORDERDETAILID) FROM Sales_SalesOrderDetail_clean;
 
 -- HumanResources_Department_clean
-Select * from HumanResources_Department_clean;
+SELECT * FROM HumanResources_Department_clean;
 -- check for duplicates
 SELECT DEPARTMENTID, COUNT(*) AS duplicate_count
 FROM HumanResources_Department_clean
