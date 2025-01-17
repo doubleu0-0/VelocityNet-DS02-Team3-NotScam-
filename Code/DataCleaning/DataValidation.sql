@@ -235,9 +235,9 @@ SELECT *
 FROM Sales_SalesOrderHeader_clean
 WHERE SALESORDERID IS NULL;
 -- check if all the customer ID are in the customer table
-SELECT soh.CUSTOMERID
-FROM Sales_SalesOrderHeader_clean soh
-WHERE soh.CUSTOMERID NOT IN (SELECT c.CUSTOMERID FROM Sales_Customer_clean C);
+SELECT CUSTOMERID
+FROM Sales_SalesOrderHeader_clean
+WHERE CUSTOMERID NOT IN (SELECT CUSTOMERID FROM Sales_Customer_clean);
 -- check the number of rows afterwards
 SELECT COUNT(SALESORDERID) FROM Sales_SalesOrderHeader_clean;
 
@@ -255,11 +255,11 @@ SELECT *
 FROM Sales_SalesOrderDetail_clean
 WHERE SALESORDERDETAILID IS NULL;
 -- check if all the sales order ID are in the sales order header table
-SELECT sod.SALESORDERID
-FROM Sales_SalesOrderDetail_clean sod
-WHERE sod.SALESORDERID NOT IN (
-    SELECT soh.SALESORDERID
-    FROM Sales_SalesOrderHeader_clean soh
+SELECT SALESORDERID
+FROM Sales_SalesOrderDetail_clean
+WHERE SALESORDERID NOT IN (
+    SELECT SALESORDERID
+    FROM Sales_SalesOrderHeader_clean
 );
 -- check the number of rows afterwards
 SELECT COUNT(SALESORDERDETAILID) FROM Sales_SalesOrderDetail_clean;
