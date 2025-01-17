@@ -31,7 +31,7 @@ def test_sales_store_data():
     SalesStoreData = session.table('SALES_STORE').to_pandas()
 
     # Check for null values in the 'ID' column
-    if 'ID' in SalesStoreData.columns:
+    if 'BUSINESSENTITYID' in SalesStoreData.columns:
         null_count = SalesStoreData['BUSINESSENTITYID'].isnull().sum()
         assert null_count == 0, f"The 'BUSINESSENTITYID' column contains {null_count} null values."
     else:
