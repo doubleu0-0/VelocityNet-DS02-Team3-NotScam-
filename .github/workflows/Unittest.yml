@@ -14,12 +14,20 @@ jobs:
       run: |
         pip install flake8 flake8-nb black pytest pytest-cov nbconvert
 
+    # Verify source notebook exists
+    - name: Verify Source Notebook Exists
+      run: ls -la Code/DataCleaning/AUTO_TRANSFORMATION/
+
     # Convert Jupyter Notebook to Python script
     - name: Convert Jupyter Notebook to Python script
       run: |
         mkdir -p Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks
         jupyter nbconvert --to script Code/DataCleaning/AUTO_TRANSFORMATION/notebook_app.ipynb \
                           --output-dir Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks
+
+    # Debug conversion output
+    - name: Debug Conversion Output
+      run: ls -la Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/
 
     # Lint Python files with flake8
     - name: Lint Python files
