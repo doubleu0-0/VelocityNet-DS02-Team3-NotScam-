@@ -39,7 +39,7 @@ jobs:
 
     # Check formatting with black
     - name: Check formatting with black
-      run: black . --check --line-length 120
+      run: black . --check --line-length 120 -vv
       continue-on-error: true
 
     # Run tests with coverage
