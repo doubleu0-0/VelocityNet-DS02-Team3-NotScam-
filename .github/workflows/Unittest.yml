@@ -29,6 +29,14 @@ jobs:
              Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.py
         fi
 
+    # Verify Converted Files
+    - name: Verify Converted Files
+      run: ls -la Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/
+
+    # Debug conversion output
+    - name: Debug Conversion Output
+      run: ls -la Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/
+
     - name: Verify Converted Files
       run: ls -la Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/
 
