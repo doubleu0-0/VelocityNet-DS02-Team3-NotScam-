@@ -32,7 +32,7 @@ jobs:
       run: |
         mkdir -p Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks
         jupyter nbconvert --to script \
-          Code/DataCleaning/AUTO_TRANSFORMATION/notebook_app.ipynb \
+          Code/DataCleaning/AUTO_TRANSFORMATION/pls.ipynb \
           --output-dir=Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks \
           --output=notebook_app
     
