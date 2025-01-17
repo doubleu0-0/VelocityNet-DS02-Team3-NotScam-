@@ -1,19 +1,28 @@
-import modin.pandas as pd
-from snowflake.snowpark.context import get_active_session
+from snowflake.snowpark import Session
+import os
 
-# Get the active Snowflake session
-session = get_active_session()
+# Initialize Snowflake session
+connection_parameters = {
+    "account": os.getenv("SNOWFLAKE_ACCOUNT"),
+    "user": os.getenv("SNOWFLAKE_USER"),
+    "password": os.getenv("SNOWFLAKE_PASSWORD"),
+    "role": os.getenv("SNOWFLAKE_ROLE"),
+    "warehouse": os.getenv("SNOWFLAKE_WAREHOUSE"),
+    "database": os.getenv("SNOWFLAKE_DATABASE"),
+    "schema": os.getenv("SNOWFLAKE_SCHEMA"),
+}
+session = Session.builder.configs(connection_parameters).create()
 
-# Read data from the Snowflake table
-SalesStoreData = pd.read_snowflake('SALES_STORE')
-SalesStoreData = pd.to_pandas(SalesStoreData)
+# Set the active session
+session.use_database(connection_parameters["database"])
+session.use_schema(connection_parameters["schema"])
 
-# Check for null values in the 'ID' column (assumed to be the first column)
-if SalesStoreData.columns[0] == 'ID':  # Ensure the first column is 'ID'
+# Proceed with your test logic
+SalesStoreData = session.table('SALES_STORE').to_pandas()
+
+# Check for null values
+if 'ID' in SalesStoreData.columns:
     null_count = SalesStoreData['ID'].isnull().sum()
-    if null_count > 0:
-        print(f"The 'ID' column contains {null_count} null values.")
-    else:
-        print("The 'ID' column does not contain any null values.")
+    print(f"The 'ID' column contains {null_count} null values.")
 else:
-    print(f"The first column is not 'ID', it is: {SalesStoreData.columns[0]}")
+    print(f"'ID' column not found in the data. Available columns: {SalesStoreData.columns}")
