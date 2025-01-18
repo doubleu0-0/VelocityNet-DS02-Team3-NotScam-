@@ -1,6 +1,8 @@
-import pytest
 from unittest.mock import patch
-from notebook_app import parse_xml, clean_sales_store_data
+
+import pytest
+from notebook_app import clean_sales_store_data, parse_xml
+
 
 def test_parse_xml():
     xml_input = "<StoreSurvey><StoreName>Test Store</StoreName></StoreSurvey>"
