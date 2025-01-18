@@ -100,9 +100,11 @@ jobs:
     - name: Run sqlfluff to format SQL files
       continue-on-error: true
       run: |
-        sqlfluff fix --dialect snowflake --force --disable-noqa -vv ./Code/**/*.sql
+        sqlfluff fix --dialect snowflake --force -vv ./Code/**/*.sql
         sqlfluff lint --dialect snowflake --show-lint-violations -vv ./Code/**/*.sql
 
+    - name: Check file permissions
+      run: ls -l ./Code/**/*.sql
     # Commit and push changes
     - name: Set up GitHub credentials
       run: |
