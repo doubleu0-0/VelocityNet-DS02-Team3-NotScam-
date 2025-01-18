@@ -1,8 +1,7 @@
-name: Continuous integration with formatting and testing checks
+name: CI/CD with Formatting, Linting, and Testing
 
 on: [push, pull_request]
 
-# Set Environmental Variables
 env:
   SNOWFLAKE_CONNECTIONS_DUMMY_ACCOUNT: ${{ secrets.TGT_ACCOUNT }}
   SNOWFLAKE_CONNECTIONS_DUMMY_USER: ${{ secrets.TGT_USER }}
@@ -11,17 +10,26 @@ env:
   SNOWFLAKE_CONNECTIONS_DUMMY_SCHEMA: "TEAM3_SCHEMA"
 
 jobs:
-  build:
+  ci-tasks:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
+
+    # Set up Python
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
         
-    # Snowflake CLI installation
+    # Install dependencies
+    - name: Install dependencies
+      run: |
+        pip install flake8 flake8-nb black pytest pytest-cov nbconvert modin[snowflake] \
+        snowflake-connector-python snowflake-snowpark-python python-dotenv pandas \
+        snowflake-connector-python[pandas] black[jupyter] isort sqlfluff
+
+    # Snowflake CLI setup and connection test
     - uses: Snowflake-Labs/snowflake-cli-action@v1.5
       with:
         cli-version: "latest"
@@ -29,28 +37,64 @@ jobs:
 
     - name: Add pipx to PATH
       run: echo "PATH=/opt/pipx_bin:$PATH" >> $GITHUB_ENV
-      
-    - name: Verify Snow CLI
-      run: snow 
 
-    - name: Test Connection
+    - name: Verify Snow CLI
+      run: snow
+
+    - name: Test Snowflake Connection
       env:
         SNOWFLAKE_CONNECTIONS_DUMMY_ROLE: TEAM3_MASTER_ADMIN
         SNOWFLAKE_CONNECTIONS_DUMMY_WAREHOUSE: TEAM3_WH
         SNOWFLAKE_CONNECTIONS_DUMMY_DATABASE: ${{ env.SNOWFLAKE_CONNECTIONS_DUMMY_DATABASE }}
         SNOWFLAKE_CONNECTIONS_DUMMY_SCHEMA: ${{ env.SNOWFLAKE_CONNECTIONS_DUMMY_SCHEMA }}
       run: snow connection test --connection Dummy
+
     - name: Verify Python Version
       run: python --version
-    # Install dependencies
-    - name: Install dependencies
+
+    # Verify source notebook exists
+    - name: Verify Source Notebook Exists
+      run: ls -la Code/DataCleaning/AUTO_TRANSFORMATION/
+
+    # Convert Jupyter Notebook to Python script
+    - name: Convert Jupyter Notebook to Python script
       run: |
-        pip install -r requirements.txt
+        mkdir -p Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks
+        jupyter nbconvert --to script \
+          Code/DataCleaning/AUTO_TRANSFORMATION/notebook_app.ipynb \
+          --output-dir=Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks \
+          --output=notebook_app
+    
+        if [ -f Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.py.txt ]; then
+          mv Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.py.txt \
+             Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.py
+        elif [ -f Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.txt ]; then
+          mv Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.txt \
+             Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.py
+        fi
+
+    # Verify Converted Files
+    - name: Verify Converted Files
+      run: ls -la Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/
+
+    # Lint Python files with flake8
+    - name: Lint Python files
+      run: flake8 Code/DataCleaning --max-line-length=120
+      continue-on-error: true
+
+    # Lint the converted Jupyter Notebook script
+    - name: Lint Converted Notebook Script
+      run: flake8 Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks/notebook_app.py --max-line-length=120
+      continue-on-error: true
+
+    # Check formatting with black
+    - name: Check formatting with black
+      run: black Code/DataCleaning --line-length 120
+      continue-on-error: true
 
     # Auto-sort imports with isort
     - name: Auto-sort imports with isort
-      run: |
-        isort .
+      run: isort .
 
     # Run sqlfluff to check and format SQL files
     - name: Run sqlfluff to format SQL files
@@ -59,7 +103,7 @@ jobs:
         sqlfluff fix --dialect snowflake --force --disable-noqa -vv ./Code/**/*.sql
         sqlfluff lint --dialect snowflake --show-lint-violations -vv ./Code/**/*.sql
 
-    # Commit changes to the current branch
+    # Commit and push changes
     - name: Set up GitHub credentials
       run: |
         git config --global user.name "${{ github.actor }}"
@@ -68,14 +112,14 @@ jobs:
 
     - name: Check out the branch
       run: |
-        git fetch origin ${{ github.ref_name }}  # Fetch the branch
-        git checkout ${{ github.ref_name }}     # Switch to the branch
+        git fetch origin ${{ github.ref_name }}
+        git checkout ${{ github.ref_name }}
 
     - name: Commit changes
       run: |
-        git add .  # Stage all changes
-        git commit -m "Fix SQL issues with sqlfluff" || echo "No changes to commit"
+        git add .
+        git commit -m "Automated updates by CI workflow" || echo "No changes to commit"
 
     - name: Push changes to the current branch
       run: |
-        git push origin ${{ github.ref_name }}  # Push changes back to the branch it's running from
+        git push origin ${{ github.ref_name }}
