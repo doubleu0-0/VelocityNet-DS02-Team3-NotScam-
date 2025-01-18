@@ -21,8 +21,6 @@ jobs:
         pip install flake8 flake8-nb black pytest pytest-cov nbconvert modin[snowflake] \
         snowflake-connector-python snowflake-snowpark-python python-dotenv pandas \
         snowflake-connector-python[pandas] black[jupyter]
-
-
     # Verify source notebook exists
     - name: Verify Source Notebook Exists
       run: ls -la Code/DataCleaning/AUTO_TRANSFORMATION/
@@ -63,6 +61,3 @@ jobs:
     - name: Check formatting with black
       run: black Code/DataCleaning --line-length 120
       continue-on-error: true
-
-
-
