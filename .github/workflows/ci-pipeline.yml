@@ -1,6 +1,6 @@
 name: CI/CD with Formatting, Linting, and Testing
 
-on: [push, pull_request]
+on: push
 
 env:
   SNOWFLAKE_CONNECTIONS_DUMMY_ACCOUNT: ${{ secrets.TGT_ACCOUNT }}
