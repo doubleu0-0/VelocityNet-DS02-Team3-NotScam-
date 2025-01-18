@@ -1,21 +1,16 @@
 import pytest
-from notebook_app import get_session, parse_xml, clean_sales_store_data
-import pandas as pd
-
-@pytest.fixture
-def session():
-    """Fixture to initialize Snowflake session."""
-    return get_session()
+from unittest.mock import patch
+from notebook_app import parse_xml, clean_sales_store_data
 
 def test_parse_xml():
-    """Test the parse_xml function."""
     xml_input = "<StoreSurvey><StoreName>Test Store</StoreName></StoreSurvey>"
     expected_output = {"StoreName": "Test Store"}
     assert parse_xml(xml_input) == expected_output
 
-def test_clean_sales_store_data(session, mocker):
-    """Test the clean_sales_store_data function."""
-    # Mock Snowflake data
+@patch('notebook_app.read_sales_store_data')
+@patch('notebook_app.write_pandas')
+def test_clean_sales_store_data(mock_write_pandas, mock_read_sales_store_data):
+    # Mock input data
     mock_data = pd.DataFrame({
         "DEMOGRAPHICS": [
             "<StoreSurvey><StoreName>Store A</StoreName></StoreSurvey>",
@@ -23,16 +18,16 @@ def test_clean_sales_store_data(session, mocker):
         ],
         "BUSINESSENTITYID": [1, 2]
     })
-    mocker.patch("modin.pandas.read_snowflake", return_value=mock_data)
-    mocker.patch("pandas.concat", return_value=mock_data)
-    mocker.patch("Session.write_pandas")
-
-    # Call the clean_sales_store_data function
-    result = clean_sales_store_data(session)
-
-    # Verify the cleaned data
+    mock_read_sales_store_data.return_value = mock_data
+    
+    # Mock session
+    mock_session = None
+    
+    # Call the function
+    result = clean_sales_store_data(mock_session)
+    
+    # Assertions
     assert "StoreName" in result.columns
     assert result.shape[0] == 2
+    mock_write_pandas.assert_called_once()
 
-    missing_columns = expected_columns - set(SalesStoreData.columns)
-    assert not missing_columns, f"The following expected columns are missing: {missing_columns}"

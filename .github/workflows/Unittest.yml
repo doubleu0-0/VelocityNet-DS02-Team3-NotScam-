@@ -20,7 +20,7 @@ jobs:
       run: |
         pip install flake8 flake8-nb black pytest pytest-cov nbconvert modin[snowflake] \
         snowflake-connector-python snowflake-snowpark-python python-dotenv pandas \
-        snowflake-connector-python[pandas]
+        snowflake-connector-python[pandas] black[jupyter]
 
 
     # Verify source notebook exists
@@ -32,7 +32,7 @@ jobs:
       run: |
         mkdir -p Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks
         jupyter nbconvert --to script \
-          Code/DataCleaning/AUTO_TRANSFORMATION/pls.ipynb \
+          Code/DataCleaning/AUTO_TRANSFORMATION/notebook_app.ipynb \
           --output-dir=Code/DataCleaning/AUTO_TRANSFORMATION/converted_notebooks \
           --output=notebook_app
     
