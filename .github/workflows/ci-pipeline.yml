@@ -103,8 +103,6 @@ jobs:
         sqlfluff fix --dialect snowflake --force -vv ./Code/**/*.sql
         sqlfluff lint --dialect snowflake --show-lint-violations -vv ./Code/**/*.sql
 
-    - name: Check file permissions
-      run: ls -l ./Code/**/*.sql
     # Commit and push changes
     - name: Set up GitHub credentials
       run: |
