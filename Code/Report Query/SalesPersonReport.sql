@@ -1,3 +1,5 @@
+-- By Jaden Khoo (S10258662)
+-- sales person report which sales person made the most profit and the contact the most users and their territory group
 SELECT 
 soh."SalesPersonID",
 st."Group",
