@@ -1,3 +1,4 @@
+-- By Jaden Khoo (S10258662)
 -- create task to transform data which will run after the TEAM3_TABLE_TRIGGERED_TASK gets the data from AWS
 CREATE OR REPLACE TASK TRANSFORM_DATA_TASK
     WAREHOUSE = TEAM3_WH    
