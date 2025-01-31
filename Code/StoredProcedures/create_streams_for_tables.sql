@@ -1,3 +1,4 @@
+-- Jaden Khoo (S10258662)
 -- create stored proc for creating streams for each of the tables
 CREATE OR REPLACE PROCEDURE create_streams_for_tables()
     RETURNS STRING
