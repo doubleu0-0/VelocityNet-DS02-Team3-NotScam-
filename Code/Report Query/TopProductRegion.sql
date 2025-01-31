@@ -1,3 +1,4 @@
+-- By Tey Xue Cong (S10257059H)
 -- View to display the top 5 products by sales revenue for each territory
 CREATE OR REPLACE VIEW VIEW_TOP_PRODUCTS_BY_REGION AS
 WITH RankedProducts AS (
@@ -16,7 +17,6 @@ ORDER BY SUM(SSD."LineTotal") DESC NULLS LAST) AS RankInTerritory
     ON SSD."ProductID" = PP."ProductID"
     GROUP BY SST."Name", PP."Name"
 )
-
 SELECT *
 FROM RankedProducts
 WHERE RankInTerritory <= 5
