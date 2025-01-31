@@ -11,7 +11,7 @@ SELECT
         WHEN i."Quantity" >= p."SafetyStockLevel" THEN 'Stock is Safe'
         ELSE 'Stock Level Warning'
     END AS StockStatus
-FROM PRODUCTION_PRODUCTINVENTORY_CLEANED i
-JOIN PRODUCTION_PRODUCT_CLEANED p ON i."ProductID" = p."ProductID"
+FROM PRODUCTION_PRODUCTINVENTORY_CLEANED AS i
+INNER JOIN PRODUCTION_PRODUCT_CLEANED AS p ON i."ProductID" = p."ProductID"
 WHERE i."Quantity"> 0
 ORDER BY TotalInventoryValue DESC;
