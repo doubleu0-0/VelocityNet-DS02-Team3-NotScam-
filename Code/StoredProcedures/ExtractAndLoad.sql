@@ -65,10 +65,10 @@ $$;
 -- create a table to store stage metadata and refresh it in the task
 CREATE OR REPLACE TABLE TEAM3_STAGE_LOGS_NEW AS
 SELECT $1 AS FILENAME, $3 AS MD5_NEW
-FROM TABLE(RESULT_SCAN(LAST_QUERY_ID()))
+FROM TABLE(RESULT_SCAN(LAST_QUERY_ID()));
 
-SELECT * FROM TEAM3_STAGE_LOGS_OLD
-SELECT * FROM TEAM3_STAGE_LOGS_NEW
+SELECT * FROM TEAM3_STAGE_LOGS_OLD;
+SELECT * FROM TEAM3_STAGE_LOGS_NEW;
 
 -- debug the stored procedure below
 -- CALL TEAM3_TABLE_APPENDER();
@@ -89,7 +89,7 @@ ORDER BY ORDINAL_POSITION;
 
 
 --empty table for debugging (this staging table is used to compare the current and old table data, whatever is new it will append the new records using a merge statement)
--- TRUNCATE TEAM3_STAGING_TABLE
+-- TRUNCATE TEAM3_STAGING_TABLE;
 
 
 
