@@ -15,53 +15,50 @@ CREATE OR REPLACE PROCEDURE clone_and_backup_all_tables(
 )
 RETURNS STRING
 LANGUAGE SQL
+EXECUTE AS CALLER
 AS
 $$
 DECLARE
-    -- Declare variables
     table_name STRING;
     clone_sql STRING;
     copy_sql STRING;
     drop_sql STRING;
     table_exists INT;
-    table_cursor CURSOR FOR SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES
-    WHERE TABLE_SCHEMA = 'TEAM3_SCHEMA'AND TABLE_TYPE = 'BASE TABLE';
-    
+    table_cursor CURSOR FOR
+    SELECT table_name
+    FROM information_schema.tables
+    WHERE table_schema = 'TEAM3_SCHEMA'
+      AND table_type = 'BASE TABLE'
+      AND table_name NOT LIKE 'AGG_%'
+      AND table_name NOT LIKE 'DIM_%'
+      AND table_name NOT LIKE 'FACT_%'
+      AND table_name NOT LIKE 'VIEW_%';
 BEGIN
-    -- Open the cursor to loop through the tables in the source schema
+    -- Iterate through all non-dynamic tables and non-view objects
     FOR record IN table_cursor DO
-        -- Get the table name from the cursor record
         table_name := record.TABLE_NAME;
-
-        -- Check if the backup table already exists
+        -- Ensure we are not backing up emptry table
         SELECT COUNT(*) INTO table_exists
         FROM INFORMATION_SCHEMA.TABLES
         WHERE TABLE_SCHEMA = :backup_schema 
           AND TABLE_NAME = :table_name || '_BACKUP';
 
-        -- If the backup table exists, drop it
-        IF (:table_exists > 0) THEN
-            -- Drop the backup table
-            drop_sql := 'DROP TABLE IF EXISTS "' || backup_schema || '"."' || table_name || '_BACKUP"';
+        IF (table_exists > 0) THEN
+            drop_sql := 'DROP TABLE IF EXISTS "' || backup_schema || '"."' || table_name || '_BACKUP"'; -- Override past data
             EXECUTE IMMEDIATE drop_sql;
+            
         END IF;
-
-        -- Clone the table from source schema to backup schema
+        -- Create table (Is ok to as we dropped all existing)
         clone_sql := 'CREATE TABLE ' || backup_schema || '.' || table_name || '_BACKUP CLONE ' || source_schema || '.' || table_name;
         EXECUTE IMMEDIATE clone_sql;
-
-        -- Create the COPY INTO SQL to export the cloned tables to S3
-        copy_sql := 'COPY INTO @' || stage_name || '/team3database-backup/' || table_name || '_backup/ ' ||
-                   'FROM ' || backup_schema || '.' || table_name || '_BACKUP ' ||
-                   'OVERWRITE = TRUE FILE_FORMAT = (TYPE = ''CSV'' FIELD_OPTIONALLY_ENCLOSED_BY = ''"'' ) SINGLE = TRUE';
+        -- Code to backup into the s3
+        copy_sql := 'COPY INTO @' || stage_name || '/team3database-backup/' || table_name || '_backup.csv ' ||
+                    'FROM ' || backup_schema || '.' || table_name || '_BACKUP ' ||
+                    'OVERWRITE = TRUE FILE_FORMAT = (TYPE = ''CSV'' FIELD_OPTIONALLY_ENCLOSED_BY = ''"'' ) SINGLE = TRUE';
         EXECUTE IMMEDIATE copy_sql;
 
     END FOR;
 
-    -- Record the backup completion time
-    EXECUTE IMMEDIATE 'INSERT INTO backup_tracking (backup_time, notes) VALUES (CURRENT_TIMESTAMP, ''Backup completed successfully'')';
-    
-    -- Return success message
     RETURN 'All tables have been successfully cloned and backed up.';
 END;
 $$;
