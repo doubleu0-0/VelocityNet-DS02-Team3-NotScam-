@@ -1,3 +1,5 @@
+-- By Jaden Khoo (S10258662)
+-- role base access policy
 USE ROLE ACCOUNTADMIN;
 -- creating the roles
 CREATE ROLE Team3_Tester;
