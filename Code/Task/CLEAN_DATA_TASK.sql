@@ -1,3 +1,4 @@
+-- By Jaden Khoo (S10258662)
 -- Create the CLEAN_DATA_TASK to automate cleaning steps, this task must resume first before root tasks
 CREATE OR REPLACE TASK CLEAN_DATA_TASK
     WAREHOUSE = TEAM3_WH
