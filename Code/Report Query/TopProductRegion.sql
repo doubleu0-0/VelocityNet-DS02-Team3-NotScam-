@@ -25,6 +25,7 @@ ORDER BY SUM(SSD."LineTotal") DESC NULLS LAST) AS RankInTerritory
     ON SSD."ProductID" = PP."ProductID"
     GROUP BY SST."Name", PP."Name"
 )
+
 SELECT *
 FROM RankedProducts
 WHERE RankInTerritory <= 5
