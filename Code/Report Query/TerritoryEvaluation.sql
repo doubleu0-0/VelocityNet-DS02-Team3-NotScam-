@@ -1,3 +1,5 @@
+-- Jaden Khoo (S10258662)
+-- which territory group has the most orders and their total sale
 SELECT 
 st."Group",
 COUNT(soh."SalesOrderID") AS "Count Of Orders",
