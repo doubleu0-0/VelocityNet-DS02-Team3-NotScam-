@@ -1,3 +1,4 @@
+-- By Jaden Khoo (S10258662)
 -- call stored procedure to create the streams for each table
 CREATE OR REPLACE TASK CREATE_STREAMS_TASK
     WAREHOUSE = TEAM3_WH    
