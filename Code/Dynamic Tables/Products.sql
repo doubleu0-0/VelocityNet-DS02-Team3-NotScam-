@@ -1,3 +1,13 @@
+-- By Tey Xue Cong (S10257059H) 
+USE ROLE TEAM3_MASTER_ADMIN;
+CREATE WAREHOUSE IF NOT EXISTS TEAM3_WH;
+USE WAREHOUSE TEAM3_WH;
+CREATE DATABASE IF NOT EXISTS TEAM3_DB;
+USE TEAM3_DB.PUBLIC;
+CREATE SCHEMA IF NOT EXISTS TEAM3_SCHEMA;
+USE SCHEMA TEAM3_SCHEMA;
+
+-- Aggregation Table for Sales by SubCategory
 create or replace dynamic table TEAM3_DB.TEAM3_SCHEMA.AGG_SALES_BY_SUBCATEGORY(
 	"ProductSubcategoryID",
 	"TotalOrderQty",
@@ -12,32 +22,24 @@ create or replace dynamic table TEAM3_DB.TEAM3_SCHEMA.AGG_SALES_BY_SUBCATEGORY(
  as
 SELECT 
     ps."ProductSubcategoryID",
-
-    -- Aggregated Order Quantity
     SUM(s."OrderQty") AS "TotalOrderQty",
-    
-    -- Aggregated Total Sales
     SUM(s."LineTotal") AS "TotalSales",
-    
-    -- Aggregated Total Expense
     SUM(s."Expense") AS "TotalExpense",
-    
-    -- Aggregated Total Profit
     SUM(s."Profit") AS "TotalProfit",
 
-    -- **Fix for AvgCostPerItem: Ensuring per-subcategory calculation**
+    -- Used for profit margin graph
     CASE 
         WHEN SUM(s."OrderQty") = 0 THEN NULL 
         ELSE SUM(s."Expense") / NULLIF(SUM(s."OrderQty"), 0)
     END AS "AvgCostPerItem",
 
-    -- **Fix for AvgSellingPricePerItem**
+    -- Used for profit margin graph
     CASE 
         WHEN SUM(s."OrderQty") = 0 THEN NULL 
         ELSE SUM(s."LineTotal") / NULLIF(SUM(s."OrderQty"), 0)
     END AS "AvgSellingPricePerItem",
 
-    -- Weighted Profit Margin
+    -- Weighted Profit Margin (Not the average of profit margin. This one takes into account the magnitude of each transaciton)
     CASE 
         WHEN SUM(s."LineTotal") = 0 THEN NULL 
         ELSE SUM(s."Profit") / NULLIF(SUM(s."LineTotal"), 0)
@@ -59,7 +61,7 @@ GROUP BY
 
 
 
-
+-- Dimension table for product
 CREATE OR REPLACE DYNAMIC TABLE TEAM3_DB.TEAM3_SCHEMA.DIM_PRODUCTION_PRODUCT(
 	"ProductID",
 	"Name",
@@ -115,7 +117,7 @@ SELECT
     "DiscontinuedDate"
 FROM TEAM3_DB.TEAM3_SCHEMA.PRODUCTION_PRODUCT_CLEANED;
 
-
+-- Dimension table for Product SubCategory
 CREATE OR REPLACE DYNAMIC TABLE TEAM3_DB.TEAM3_SCHEMA.DIM_PRODUCTION_PRODUCTSUBCATEGORY(
 	"ProductSubcategoryID",
 	"ProductCategoryID",
@@ -148,7 +150,7 @@ SELECT
 FROM TEAM3_DB.TEAM3_SCHEMA.PRODUCTION_PRODUCTCATEGORY_CLEANED;
 
 
-
+-- Fact table for Purchasing Product Vendor
 CREATE OR REPLACE DYNAMIC TABLE TEAM3_DB.TEAM3_SCHEMA.FACT_PURCHASING_PRODUCTVENDOR(
 	"ProductID",
 	"BusinessEntityID",
@@ -182,7 +184,7 @@ FROM TEAM3_DB.TEAM3_SCHEMA.PURCHASING_PRODUCTVENDOR_CLEANED;
 
 
 
-
+-- Fact table for sales order detail
 CREATE OR REPLACE DYNAMIC TABLE TEAM3_DB.TEAM3_SCHEMA.FACT_SALES_SALESORDERDETAIL(
 	"SalesOrderID",
 	"SalesOrderDetailID",
@@ -225,7 +227,7 @@ LEFT JOIN TEAM3_DB.TEAM3_SCHEMA.DIM_PRODUCTION_PRODUCT p
 ON s."ProductID" = p."ProductID";
 
 
-
+-- Fact table for sales sales order header
 CREATE OR REPLACE DYNAMIC TABLE TEAM3_DB.TEAM3_SCHEMA.FACT_SALES_SALESORDERHEADER(
 	"SalesOrderID",
 	"OrderDate",
@@ -283,7 +285,7 @@ SELECT
     s."ModifiedDate"
 FROM TEAM3_DB.TEAM3_SCHEMA.SALES_SALESORDERHEADER_CLEANED s;
 
-
+-- Dimension table for sales sales territory, renamed to prevent clashs
 CREATE OR REPLACE DYNAMIC TABLE TEAM3_DB.TEAM3_SCHEMA.DIM_SALES_SALESTERRITORY2(
 	"TerritoryID",
 	"Name",
