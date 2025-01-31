@@ -1,3 +1,4 @@
+-- Jaden Khoo (S10258662)
 CREATE OR REPLACE PROCEDURE validate_data_quality(staging_table STRING)
     RETURNS STRING
     LANGUAGE SQL
