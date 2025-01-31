@@ -6,9 +6,9 @@ TO_CHAR("OrderDate", 'YYYY-MM') || '-01' AS "OrderDateYearMonth",
 SUM("SubTotal") AS "SubTotal",
 SUM("TaxAmt") AS "TaxAmt",
 SUM("Freight") AS "Freight",
-SUM("TotalDue") AS "TotalDue",
-FROM SALES_SALESORDERHEADER_CLEANED soh
-LEFT JOIN SALES_SALESTERRITORY st ON soh."TerritoryID" = st."TerritoryID"
+SUM("TotalDue") AS "TotalDue"
+FROM SALES_SALESORDERHEADER_CLEANED AS soh
+LEFT JOIN SALES_SALESTERRITORY AS st ON soh."TerritoryID" = st."TerritoryID"
 GROUP BY "OrderDateYearMonth";
 
 CREATE OR REPLACE TABLE SALES_PER_MONTH AS
@@ -36,8 +36,8 @@ ppm1."Freight",
 ppm1."TotalDue",
 ppm1."PreviousMonth",
 ppm2."TotalDue" AS "PastTotalDue"
-FROM SALES_PER_MONTH ppm1
-LEFT JOIN SALES_PER_MONTH ppm2 ON ppm1."PreviousMonth" = ppm2."OrderDateYearMonth";
+FROM SALES_PER_MONTH AS ppm1
+LEFT JOIN SALES_PER_MONTH AS ppm2 ON ppm1."PreviousMonth" = ppm2."OrderDateYearMonth";
 
 CREATE OR REPLACE TABLE CHANGE_IN_SALES AS
 SELECT 
@@ -72,7 +72,6 @@ CASE
     -- If ChangeInSales is negative
     WHEN "ChangeInSales" < 0 THEN
         'Sales ▼ by $' || TO_CHAR(ROUND(ABS("ChangeInSales"),2)) || ' this Month'
-    ELSE NULL
 END AS "Description"
 FROM CHANGE_IN_SALES;
 
