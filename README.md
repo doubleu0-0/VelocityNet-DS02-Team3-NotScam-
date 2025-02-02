@@ -4,7 +4,7 @@ VelocityNet is an 11-week, 5-sprint program focused on migrating Velocity's data
 # How the code works
 
 ### Data Cleaning
-Code for data cleaning can be found in Code>DataCleaning
+Code for data cleaning can be found in Code>DataCleaning<br>
 Code for data cleaning already in the task for automation and is not needed to run in the pipeline
 
 ### StoredProcedures
