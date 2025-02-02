@@ -8,7 +8,7 @@ Code for data cleaning can be found in Code>DataCleaning<br>
 Code for data cleaning already in the task for automation and is not needed to run in the pipeline
 
 ### StoredProcedures
-Code for Stored Procedures can be found in Code>StoredProcedures
+Code for Stored Procedures can be found in Code>StoredProcedures<br>
 Code for stored procedures are to help with executing large groups of sql code especially in task to allow for automation of the pipeline process
 
 ### Transform 
