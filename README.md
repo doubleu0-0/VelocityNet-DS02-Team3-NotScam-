@@ -11,6 +11,21 @@ Code for data cleaning already in the task for automation and is not needed to r
 **Code for Stored Procedures can be found in Code>StoredProcedures<br>**
 Code for stored procedures are to help with executing large groups of sql code especially in task to allow for automation of the pipeline process
 
+### Extract
+**Code for the setting up of the primary stage is the CodeStageSetup.sql file<br>**
+This will contain the code to also create another stage to stage the file logs for the load code <br>
+Ensure the code is ran in blocks instead of running all at once to prevent errors<br>
+
+### Load
+**The entire package code for the load can be found in Code>StoredProcedures>ExtractAndLoad.sql<br>**
+It contains the code to create the streams, stored procedures, tables, views and pipes to make this work <br>
+The tasks used for this portion is found in Code
+**The tasks used for this portion is found in Code>Task>ExtractAndLoadTasks.sql<br>**
+Make sure this is ran after the tasks in Transform have been ran since the Transform tasks run after <br>
+the load tasks, suspension of tasks must start from the load tasks then transform tasks, resuming them is the opposite <br>
+Ensure the load tasks are created after the objects in ExtractAndLoad.sql is done <br>
+This Extract and Load codes will automate table creation and appending data
+
 ### Transform 
 **Tasks can be found in the Code>Task<br>**
 **CLEAN_DATA_TASK can be found in Code>Dynamic Tables>DataCleaning.sql<br>**
@@ -21,9 +36,6 @@ CLEAN_DATA_TASK<br>
 CREATE_AGGREGATION_TASK<br>
 <br>
 This would clean the data and create and new aggregations for the dashboards
-
-### CI/CD Pipeline
-This workflow automates code quality checks, formatting, and Snowflake integration. It installs dependencies, sets up Python and Snowflake CLI, and verifies the Snowflake connection. The workflow converts Jupyter notebooks to Python scripts, performs linting (flake8), formatting (black, isort), and SQL validation (sqlfluff). It ensures all files are properly structured and formatted, and if not then it raises errors which can be seen in the Github Actions tab, streamlining collaboration and maintaining code consistency before the code is pushed to the main branch.
 
 ### Dynamic Tables
 **Dynamic tables can be found in Code>Dynamic Tables<br>**
