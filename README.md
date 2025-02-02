@@ -19,7 +19,7 @@ Ensure the code is ran in blocks instead of running all at once to prevent error
 ### Load
 **The entire package code for the load can be found in Code>StoredProcedures>ExtractAndLoad.sql<br>**
 It contains the code to create the streams, stored procedures, tables, views and pipes to make this work <br>
-The tasks used for this portion is found in Code
+The tasks used for this portion is found in Code <br>
 **The tasks used for this portion is found in Code>Task>ExtractAndLoadTasks.sql<br>**
 Make sure this is ran after the tasks in Transform have been ran since the Transform tasks run after <br>
 the load tasks, suspension of tasks must start from the load tasks then transform tasks, resuming them is the opposite <br>
