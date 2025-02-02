@@ -22,6 +22,9 @@ CREATE_AGGREGATION_TASK<br>
 <br>
 This would clean the data and create and new aggregations for the dashboards
 
+### CI/CD Pipeline
+This workflow automates code quality checks, formatting, and Snowflake integration. It installs dependencies, sets up Python and Snowflake CLI, and verifies the Snowflake connection. The workflow converts Jupyter notebooks to Python scripts, performs linting (flake8), formatting (black, isort), and SQL validation (sqlfluff). It ensures all files are properly structured and formatted, and if not then it raises errors which can be seen in the Github Actions tab, streamlining collaboration and maintaining code consistency before the code is pushed to the main branch.
+
 ### Dynamic Tables
 **Dynamic tables can be found in Code>Dynamic Tables<br>**
 Run the code in:<br>
